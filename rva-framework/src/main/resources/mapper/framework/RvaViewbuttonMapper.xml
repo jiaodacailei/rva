@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaViewbuttonMapper">
+    
+    <resultMap type="RvaViewbutton" id="RvaViewbuttonResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="idx"    column="idx"    />
+        <result property="icon"    column="icon"    />
+        <result property="cls"    column="cls"    />
+        <result property="position"    column="position"    />
+        <result property="readonlyShow"    column="readonly_show"    />
+        <result property="action"    column="action"    />
+        <result property="actionUrl"    column="action_url"    />
+        <result property="actionDialogViewId"    column="action_dialog_view_id"    />
+        <result property="actionDialogAppId"    column="action_dialog_app_id"    />
+        <result property="actionSuccess"    column="action_success"    />
+        <result property="selectType"    column="select_type"    />
+        <result property="actionFailure"    column="action_failure"    />
+        <result property="showIf"    column="show_if"    />
+        <result property="viewId"    column="view_id"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaViewbuttonVo">
+        select id, name, type, idx, icon, cls, position, readonly_show, action, action_url, action_dialog_view_id, action_dialog_app_id, action_success, select_type, action_failure, show_if, view_id, data from rva_viewbutton
+    </sql>
+
+    <select id="selectRvaViewbuttonList" parameterType="RvaViewbutton" resultMap="RvaViewbuttonResult">
+        <include refid="selectRvaViewbuttonVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
+            <if test="cls != null  and cls != ''"> and cls = #{cls}</if>
+            <if test="position != null  and position != ''"> and position = #{position}</if>
+            <if test="readonlyShow != null  and readonlyShow != ''"> and readonly_show = #{readonlyShow}</if>
+            <if test="action != null  and action != ''"> and action = #{action}</if>
+            <if test="actionUrl != null  and actionUrl != ''"> and action_url = #{actionUrl}</if>
+            <if test="actionDialogViewId != null  and actionDialogViewId != ''"> and action_dialog_view_id = #{actionDialogViewId}</if>
+            <if test="actionDialogAppId != null  and actionDialogAppId != ''"> and action_dialog_app_id = #{actionDialogAppId}</if>
+            <if test="actionSuccess != null  and actionSuccess != ''"> and action_success = #{actionSuccess}</if>
+            <if test="selectType != null  and selectType != ''"> and select_type = #{selectType}</if>
+            <if test="actionFailure != null  and actionFailure != ''"> and action_failure = #{actionFailure}</if>
+            <if test="showIf != null  and showIf != ''"> and show_if = #{showIf}</if>
+            <if test="viewId != null  and viewId != ''"> and view_id = #{viewId}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaViewbuttonById" parameterType="String" resultMap="RvaViewbuttonResult">
+        <include refid="selectRvaViewbuttonVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaViewbutton" parameterType="RvaViewbutton">
+        insert into rva_viewbutton
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="idx != null">idx,</if>
+            <if test="icon != null">icon,</if>
+            <if test="cls != null">cls,</if>
+            <if test="position != null">position,</if>
+            <if test="readonlyShow != null">readonly_show,</if>
+            <if test="action != null">action,</if>
+            <if test="actionUrl != null">action_url,</if>
+            <if test="actionDialogViewId != null">action_dialog_view_id,</if>
+            <if test="actionDialogAppId != null">action_dialog_app_id,</if>
+            <if test="actionSuccess != null">action_success,</if>
+            <if test="selectType != null">select_type,</if>
+            <if test="actionFailure != null">action_failure,</if>
+            <if test="showIf != null">show_if,</if>
+            <if test="viewId != null and viewId != ''">view_id,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="cls != null">#{cls},</if>
+            <if test="position != null">#{position},</if>
+            <if test="readonlyShow != null">#{readonlyShow},</if>
+            <if test="action != null">#{action},</if>
+            <if test="actionUrl != null">#{actionUrl},</if>
+            <if test="actionDialogViewId != null">#{actionDialogViewId},</if>
+            <if test="actionDialogAppId != null">#{actionDialogAppId},</if>
+            <if test="actionSuccess != null">#{actionSuccess},</if>
+            <if test="selectType != null">#{selectType},</if>
+            <if test="actionFailure != null">#{actionFailure},</if>
+            <if test="showIf != null">#{showIf},</if>
+            <if test="viewId != null and viewId != ''">#{viewId},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaViewbutton" parameterType="RvaViewbutton">
+        update rva_viewbutton
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="cls != null">cls = #{cls},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="readonlyShow != null">readonly_show = #{readonlyShow},</if>
+            <if test="action != null">action = #{action},</if>
+            <if test="actionUrl != null">action_url = #{actionUrl},</if>
+            <if test="actionDialogViewId != null">action_dialog_view_id = #{actionDialogViewId},</if>
+            <if test="actionDialogAppId != null">action_dialog_app_id = #{actionDialogAppId},</if>
+            <if test="actionSuccess != null">action_success = #{actionSuccess},</if>
+            <if test="selectType != null">select_type = #{selectType},</if>
+            <if test="actionFailure != null">action_failure = #{actionFailure},</if>
+            <if test="showIf != null">show_if = #{showIf},</if>
+            <if test="viewId != null and viewId != ''">view_id = #{viewId},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaViewbuttonById" parameterType="String">
+        delete from rva_viewbutton where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaViewbuttonByIds" parameterType="String">
+        delete from rva_viewbutton where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

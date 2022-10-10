@@ -1,0 +1,14 @@
+[Unit]
+# 该文件需要放到/usr/lib/systemd/system目录下
+Description=@@module daemon
+
+[Service]
+Type=simple
+Environment=XINLI_DIR=/root/xinli/
+ExecStart=@@java_bin -jar @@jar_all_path --spring.config.location=@@path_jar/application.yml,@@path_jar/application-druid.yml
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Restart=never

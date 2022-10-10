@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaChartSeriesMapper">
+    
+    <resultMap type="RvaChartSeries" id="RvaChartSeriesResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="axisXId"    column="axis_x_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="axisYId"    column="axis_y_id"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="dataIndex"    column="data_index"    />
+        <result property="data"    column="data"    />
+        <result property="chartDatasetId"    column="chart_dataset_id"    />
+        <result property="type"    column="type"    />
+        <result property="chartId"    column="chart_id"    />
+        <result property="idx"    column="idx"    />
+    </resultMap>
+
+    <sql id="selectRvaChartSeriesVo">
+        select id, name, create_by, axis_x_id, create_time, update_by, axis_y_id, update_time, data_type, data_index, data, chart_dataset_id, type, chart_id, idx from rva_chart_series
+    </sql>
+
+    <select id="selectRvaChartSeriesList" parameterType="RvaChartSeries" resultMap="RvaChartSeriesResult">
+        <include refid="selectRvaChartSeriesVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="axisXId != null  and axisXId != ''"> and axis_x_id = #{axisXId}</if>
+            <if test="axisYId != null  and axisYId != ''"> and axis_y_id = #{axisYId}</if>
+            <if test="dataType != null  and dataType != ''"> and data_type = #{dataType}</if>
+            <if test="dataIndex != null "> and data_index = #{dataIndex}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="chartDatasetId != null  and chartDatasetId != ''"> and chart_dataset_id = #{chartDatasetId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="chartId != null  and chartId != ''"> and chart_id = #{chartId}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaChartSeriesById" parameterType="String" resultMap="RvaChartSeriesResult">
+        <include refid="selectRvaChartSeriesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaChartSeries" parameterType="RvaChartSeries">
+        insert into rva_chart_series
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="axisXId != null">axis_x_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="axisYId != null">axis_y_id,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="dataIndex != null">data_index,</if>
+            <if test="data != null">data,</if>
+            <if test="chartDatasetId != null">chart_dataset_id,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="chartId != null">chart_id,</if>
+            <if test="idx != null">idx,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="axisXId != null">#{axisXId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="axisYId != null">#{axisYId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="dataType != null">#{dataType},</if>
+            <if test="dataIndex != null">#{dataIndex},</if>
+            <if test="data != null">#{data},</if>
+            <if test="chartDatasetId != null">#{chartDatasetId},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="chartId != null">#{chartId},</if>
+            <if test="idx != null">#{idx},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaChartSeries" parameterType="RvaChartSeries">
+        update rva_chart_series
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="axisXId != null">axis_x_id = #{axisXId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="axisYId != null">axis_y_id = #{axisYId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="dataType != null">data_type = #{dataType},</if>
+            <if test="dataIndex != null">data_index = #{dataIndex},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="chartDatasetId != null">chart_dataset_id = #{chartDatasetId},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="chartId != null">chart_id = #{chartId},</if>
+            <if test="idx != null">idx = #{idx},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaChartSeriesById" parameterType="String">
+        delete from rva_chart_series where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaChartSeriesByIds" parameterType="String">
+        delete from rva_chart_series where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

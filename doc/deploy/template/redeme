@@ -1,0 +1,11 @@
+前端配置文件模板
+.env.production         -- ruoyi-ui/.env.production
+index.js                -- ruoyi-ui/src/router/index.js
+vue.config.js           -- ruoyi-ui/vue.config.js
+后端配置文件
+application.yml         --ruoyi-admin/src/main/resources/application.yml
+application-druid.yml   --ruoyi-admin/src/main/resources/application-druid.yml
+shell脚本
+config.sh               --配置参数
+git.sh                  --源码获取
+hander_config.sh        --修改源码配置

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaTriggerMapper">
+    
+    <resultMap type="RvaTrigger" id="RvaTriggerResult">
+        <result property="id"    column="id"    />
+        <result property="params"    column="params"    />
+        <result property="triggerIf"    column="trigger_if"    />
+        <result property="viewId"    column="view_id"    />
+        <result property="idx"    column="idx"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaTriggerVo">
+        select id, params, trigger_if, view_id, idx, data from rva_trigger
+    </sql>
+
+    <select id="selectRvaTriggerList" parameterType="RvaTrigger" resultMap="RvaTriggerResult">
+        <include refid="selectRvaTriggerVo"/>
+        <where>  
+            <if test="params != null  and params != ''"> and params = #{params}</if>
+            <if test="triggerIf != null  and triggerIf != ''"> and trigger_if = #{triggerIf}</if>
+            <if test="viewId != null  and viewId != ''"> and view_id = #{viewId}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaTriggerById" parameterType="String" resultMap="RvaTriggerResult">
+        <include refid="selectRvaTriggerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaTrigger" parameterType="RvaTrigger">
+        insert into rva_trigger
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="params != null and params != ''">params,</if>
+            <if test="triggerIf != null and triggerIf != ''">trigger_if,</if>
+            <if test="viewId != null and viewId != ''">view_id,</if>
+            <if test="idx != null">idx,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="params != null and params != ''">#{params},</if>
+            <if test="triggerIf != null and triggerIf != ''">#{triggerIf},</if>
+            <if test="viewId != null and viewId != ''">#{viewId},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaTrigger" parameterType="RvaTrigger">
+        update rva_trigger
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="params != null and params != ''">params = #{params},</if>
+            <if test="triggerIf != null and triggerIf != ''">trigger_if = #{triggerIf},</if>
+            <if test="viewId != null and viewId != ''">view_id = #{viewId},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaTriggerById" parameterType="String">
+        delete from rva_trigger where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaTriggerByIds" parameterType="String">
+        delete from rva_trigger where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

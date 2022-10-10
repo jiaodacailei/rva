@@ -1,0 +1,37 @@
+{
+  "id": "3155667",
+  "name": "nvr",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11198345",
+      "name": "分屏",
+      "font_class": "fenping",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "1177122",
+      "name": "九宫格",
+      "font_class": "iconfontzhizuobiaozhun0247",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "12013514",
+      "name": "单屏预览",
+      "font_class": "danpingyulan",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "25793497",
+      "name": "宫格视图",
+      "font_class": "gonggeshitu",
+      "unicode": "e6d7",
+      "unicode_decimal": 59095
+    }
+  ]
+}

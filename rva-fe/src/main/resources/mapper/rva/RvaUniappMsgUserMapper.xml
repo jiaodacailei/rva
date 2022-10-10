@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.fe.mapper.RvaUniappMsgUserMapper">
+
+    <resultMap type="RvaUniappMsgUser" id="RvaUniappMsgUserResult">
+        <result property="id"    column="id"    />
+        <result property="msgId"    column="msg_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="readStatus"    column="read_status"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="msgUrl"    column="msg_url"    />
+        <result property="msgAppUrl"    column="msg_app_url"    />
+        <result property="msgGroup"    column="msg_group"    />
+        <result property="sendBy"    column="send_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRvaUniappMsgUserVo">
+        select id, msg_id, user_id, read_status, title, content, msg_url, msg_app_url, msg_group, send_by, create_time, update_time from rva_uniapp_msg_user
+    </sql>
+
+    <select id="selectRvaUniappMsgUserList" parameterType="RvaUniappMsgUser" resultMap="RvaUniappMsgUserResult">
+        <include refid="selectRvaUniappMsgUserVo"/>
+        <where>
+            <if test="msgId != null "> and msg_id = #{msgId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="readStatus != null  and readStatus != ''"> and read_status = #{readStatus}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="msgUrl != null  and msgUrl != ''"> and msg_url = #{msgUrl}</if>
+            <if test="msgAppUrl != null  and msgAppUrl != ''"> and msg_app_url = #{msgAppUrl}</if>
+            <if test="msgGroup != null  and msgGroup != ''"> and msg_group = #{msgGroup}</if>
+            <if test="sendBy != null "> and send_by = #{sendBy}</if>
+        </where>
+    </select>
+
+    <select id="selectRvaUniappMsgUserById" parameterType="Long" resultMap="RvaUniappMsgUserResult">
+        <include refid="selectRvaUniappMsgUserVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRvaUniappMsgUser" parameterType="RvaUniappMsgUser" useGeneratedKeys="true" keyProperty="id">
+        insert into rva_uniapp_msg_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="msgId != null">msg_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="readStatus != null">read_status,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="msgUrl != null">msg_url,</if>
+            <if test="msgAppUrl != null">msg_app_url,</if>
+            <if test="msgGroup != null">msg_group,</if>
+            <if test="sendBy != null">send_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="msgId != null">#{msgId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="readStatus != null">#{readStatus},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="msgUrl != null">#{msgUrl},</if>
+            <if test="msgAppUrl != null">#{msgAppUrl},</if>
+            <if test="msgGroup != null">#{msgGroup},</if>
+            <if test="sendBy != null">#{sendBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaUniappMsgUser" parameterType="RvaUniappMsgUser">
+        update rva_uniapp_msg_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="msgId != null">msg_id = #{msgId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="readStatus != null">read_status = #{readStatus},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="msgUrl != null">msg_url = #{msgUrl},</if>
+            <if test="msgAppUrl != null">msg_app_url = #{msgAppUrl},</if>
+            <if test="msgGroup != null">msg_group = #{msgGroup},</if>
+            <if test="sendBy != null">send_by = #{sendBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaUniappMsgUserById" parameterType="Long">
+        delete from rva_uniapp_msg_user where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaUniappMsgUserByIds" parameterType="String">
+        delete from rva_uniapp_msg_user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

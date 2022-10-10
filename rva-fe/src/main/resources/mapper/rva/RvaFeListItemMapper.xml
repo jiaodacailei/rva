@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.fe.mapper.RvaFeListItemMapper">
+    
+    <resultMap type="RvaFeListItem" id="RvaFeListItemResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="position"    column="position"    />
+        <result property="listId"    column="list_id"    />
+        <result property="propId"    column="prop_id"    />
+        <result property="icon"    column="icon"    />
+        <result property="idx"    column="idx"    />
+        <result property="text"    column="text"    />
+        <result property="orderIndex"    column="order_index"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="groupValue"    column="group_value"    />
+        <result property="actionType"    column="action_type"    />
+        <result property="actionParams"    column="action_params"    />
+        <result property="dict"    column="dict"    />
+        <result property="numberScale"    column="number_scale"    />
+        <result property="showArrow"    column="show_arrow"    />
+        <result property="switchUrl"    column="switch_url"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaFeListItemVo">
+        select id, name, position, list_id, prop_id, icon, idx, text, order_index, order_type, group_value, action_type, action_params, dict, number_scale, show_arrow, switch_url, data from rva_fe_list_item
+    </sql>
+
+    <select id="selectRvaFeListItemList" parameterType="RvaFeListItem" resultMap="RvaFeListItemResult">
+        <include refid="selectRvaFeListItemVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="position != null  and position != ''"> and position = #{position}</if>
+            <if test="listId != null  and listId != ''"> and list_id = #{listId}</if>
+            <if test="propId != null  and propId != ''"> and prop_id = #{propId}</if>
+            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="text != null  and text != ''"> and text = #{text}</if>
+            <if test="orderIndex != null "> and order_index = #{orderIndex}</if>
+            <if test="orderType != null  and orderType != ''"> and order_type = #{orderType}</if>
+            <if test="groupValue != null  and groupValue != ''"> and group_value = #{groupValue}</if>
+            <if test="actionType != null  and actionType != ''"> and action_type = #{actionType}</if>
+            <if test="actionParams != null  and actionParams != ''"> and action_params = #{actionParams}</if>
+            <if test="dict != null  and dict != ''"> and dict = #{dict}</if>
+            <if test="numberScale != null "> and number_scale = #{numberScale}</if>
+            <if test="showArrow != null  and showArrow != ''"> and show_arrow = #{showArrow}</if>
+            <if test="switchUrl != null  and switchUrl != ''"> and switch_url = #{switchUrl}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaFeListItemById" parameterType="String" resultMap="RvaFeListItemResult">
+        <include refid="selectRvaFeListItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaFeListItem" parameterType="RvaFeListItem">
+        insert into rva_fe_list_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="position != null">position,</if>
+            <if test="listId != null and listId != ''">list_id,</if>
+            <if test="propId != null">prop_id,</if>
+            <if test="icon != null">icon,</if>
+            <if test="idx != null">idx,</if>
+            <if test="text != null">text,</if>
+            <if test="orderIndex != null">order_index,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="groupValue != null">group_value,</if>
+            <if test="actionType != null">action_type,</if>
+            <if test="actionParams != null">action_params,</if>
+            <if test="dict != null">dict,</if>
+            <if test="numberScale != null">number_scale,</if>
+            <if test="showArrow != null">show_arrow,</if>
+            <if test="switchUrl != null">switch_url,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="position != null">#{position},</if>
+            <if test="listId != null and listId != ''">#{listId},</if>
+            <if test="propId != null">#{propId},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="text != null">#{text},</if>
+            <if test="orderIndex != null">#{orderIndex},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="groupValue != null">#{groupValue},</if>
+            <if test="actionType != null">#{actionType},</if>
+            <if test="actionParams != null">#{actionParams},</if>
+            <if test="dict != null">#{dict},</if>
+            <if test="numberScale != null">#{numberScale},</if>
+            <if test="showArrow != null">#{showArrow},</if>
+            <if test="switchUrl != null">#{switchUrl},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaFeListItem" parameterType="RvaFeListItem">
+        update rva_fe_list_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="listId != null and listId != ''">list_id = #{listId},</if>
+            <if test="propId != null">prop_id = #{propId},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="text != null">text = #{text},</if>
+            <if test="orderIndex != null">order_index = #{orderIndex},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="groupValue != null">group_value = #{groupValue},</if>
+            <if test="actionType != null">action_type = #{actionType},</if>
+            <if test="actionParams != null">action_params = #{actionParams},</if>
+            <if test="dict != null">dict = #{dict},</if>
+            <if test="numberScale != null">number_scale = #{numberScale},</if>
+            <if test="showArrow != null">show_arrow = #{showArrow},</if>
+            <if test="switchUrl != null">switch_url = #{switchUrl},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaFeListItemById" parameterType="String">
+        delete from rva_fe_list_item where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaFeListItemByIds" parameterType="String">
+        delete from rva_fe_list_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

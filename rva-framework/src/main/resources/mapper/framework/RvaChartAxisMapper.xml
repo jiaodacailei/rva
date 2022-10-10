@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaChartAxisMapper">
+    
+    <resultMap type="RvaChartAxis" id="RvaChartAxisResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="dataIndex"    column="data_index"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="chartDatasetId"    column="chart_dataset_id"    />
+        <result property="chartGridId"    column="chart_grid_id"    />
+        <result property="data"    column="data"    />
+        <result property="type"    column="type"    />
+        <result property="chartId"    column="chart_id"    />
+        <result property="idx"    column="idx"    />
+    </resultMap>
+
+    <sql id="selectRvaChartAxisVo">
+        select id, name, create_by, data_type, create_time, update_by, data_index, update_time, chart_dataset_id, chart_grid_id, data, type, chart_id, idx from rva_chart_axis
+    </sql>
+
+    <select id="selectRvaChartAxisList" parameterType="RvaChartAxis" resultMap="RvaChartAxisResult">
+        <include refid="selectRvaChartAxisVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="dataType != null  and dataType != ''"> and data_type = #{dataType}</if>
+            <if test="dataIndex != null "> and data_index = #{dataIndex}</if>
+            <if test="chartDatasetId != null  and chartDatasetId != ''"> and chart_dataset_id = #{chartDatasetId}</if>
+            <if test="chartGridId != null  and chartGridId != ''"> and chart_grid_id = #{chartGridId}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="chartId != null  and chartId != ''"> and chart_id = #{chartId}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaChartAxisById" parameterType="String" resultMap="RvaChartAxisResult">
+        <include refid="selectRvaChartAxisVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaChartAxis" parameterType="RvaChartAxis">
+        insert into rva_chart_axis
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="dataIndex != null">data_index,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="chartDatasetId != null">chart_dataset_id,</if>
+            <if test="chartGridId != null and chartGridId != ''">chart_grid_id,</if>
+            <if test="data != null">data,</if>
+            <if test="type != null">type,</if>
+            <if test="chartId != null and chartId != ''">chart_id,</if>
+            <if test="idx != null">idx,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="dataType != null">#{dataType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="dataIndex != null">#{dataIndex},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="chartDatasetId != null">#{chartDatasetId},</if>
+            <if test="chartGridId != null and chartGridId != ''">#{chartGridId},</if>
+            <if test="data != null">#{data},</if>
+            <if test="type != null">#{type},</if>
+            <if test="chartId != null and chartId != ''">#{chartId},</if>
+            <if test="idx != null">#{idx},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaChartAxis" parameterType="RvaChartAxis">
+        update rva_chart_axis
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="dataType != null">data_type = #{dataType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="dataIndex != null">data_index = #{dataIndex},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="chartDatasetId != null">chart_dataset_id = #{chartDatasetId},</if>
+            <if test="chartGridId != null and chartGridId != ''">chart_grid_id = #{chartGridId},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="chartId != null and chartId != ''">chart_id = #{chartId},</if>
+            <if test="idx != null">idx = #{idx},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaChartAxisById" parameterType="String">
+        delete from rva_chart_axis where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaChartAxisByIds" parameterType="String">
+        delete from rva_chart_axis where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

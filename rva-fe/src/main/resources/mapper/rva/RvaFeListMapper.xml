@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.fe.mapper.RvaFeListMapper">
+    
+    <resultMap type="RvaFeList" id="RvaFeListResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="mode"    column="mode"    />
+        <result property="forceMode"    column="force_mode"    />
+        <result property="objId"    column="obj_id"    />
+        <result property="objFavoritesIds"    column="obj_favorites_ids"    />
+        <result property="objCommentsId"    column="obj_comments_id"    />
+        <result property="loadWhere"    column="load_where"    />
+        <result property="rowsInit"    column="rows_init"    />
+        <result property="rowsUpdate"    column="rows_update"    />
+        <result property="showTitle"    column="show_title"    />
+        <result property="showExcerpt"    column="show_excerpt"    />
+        <result property="showAvatarCount"    column="show_avatar_count"    />
+        <result property="showExtrasCount"    column="show_extras_count"    />
+        <result property="showButtonCount"    column="show_button_count"    />
+        <result property="propNameMode"    column="prop_name_mode"    />
+        <result property="propNameDisabled"    column="prop_name_disabled"    />
+        <result property="propNameCategory"    column="prop_name_category"    />
+        <result property="propNameGroup"    column="prop_name_group"    />
+        <result property="dictCategory"    column="dict_category"    />
+        <result property="dictGroup"    column="dict_group"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaFeListVo">
+        select id, name, mode, force_mode, obj_id, obj_favorites_ids, obj_comments_id, load_where, rows_init, rows_update, show_title, show_excerpt, show_avatar_count, show_extras_count, show_button_count, prop_name_mode, prop_name_disabled, prop_name_category, prop_name_group, dict_category, dict_group, data from rva_fe_list
+    </sql>
+
+    <select id="selectRvaFeListList" parameterType="RvaFeList" resultMap="RvaFeListResult">
+        <include refid="selectRvaFeListVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="mode != null "> and mode = #{mode}</if>
+            <if test="forceMode != null  and forceMode != ''"> and force_mode = #{forceMode}</if>
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+            <if test="objFavoritesIds != null  and objFavoritesIds != ''"> and obj_favorites_ids = #{objFavoritesIds}</if>
+            <if test="objCommentsId != null  and objCommentsId != ''"> and obj_comments_id = #{objCommentsId}</if>
+            <if test="loadWhere != null  and loadWhere != ''"> and load_where = #{loadWhere}</if>
+            <if test="rowsInit != null "> and rows_init = #{rowsInit}</if>
+            <if test="rowsUpdate != null "> and rows_update = #{rowsUpdate}</if>
+            <if test="showTitle != null  and showTitle != ''"> and show_title = #{showTitle}</if>
+            <if test="showExcerpt != null  and showExcerpt != ''"> and show_excerpt = #{showExcerpt}</if>
+            <if test="showAvatarCount != null "> and show_avatar_count = #{showAvatarCount}</if>
+            <if test="showExtrasCount != null "> and show_extras_count = #{showExtrasCount}</if>
+            <if test="showButtonCount != null "> and show_button_count = #{showButtonCount}</if>
+            <if test="propNameMode != null  and propNameMode != ''"> and prop_name_mode = #{propNameMode}</if>
+            <if test="propNameDisabled != null  and propNameDisabled != ''"> and prop_name_disabled = #{propNameDisabled}</if>
+            <if test="propNameCategory != null  and propNameCategory != ''"> and prop_name_category = #{propNameCategory}</if>
+            <if test="propNameGroup != null  and propNameGroup != ''"> and prop_name_group = #{propNameGroup}</if>
+            <if test="dictCategory != null  and dictCategory != ''"> and dict_category = #{dictCategory}</if>
+            <if test="dictGroup != null  and dictGroup != ''"> and dict_group = #{dictGroup}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaFeListById" parameterType="String" resultMap="RvaFeListResult">
+        <include refid="selectRvaFeListVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaFeList" parameterType="RvaFeList">
+        insert into rva_fe_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="mode != null">mode,</if>
+            <if test="forceMode != null">force_mode,</if>
+            <if test="objId != null and objId != ''">obj_id,</if>
+            <if test="objFavoritesIds != null">obj_favorites_ids,</if>
+            <if test="objCommentsId != null">obj_comments_id,</if>
+            <if test="loadWhere != null">load_where,</if>
+            <if test="rowsInit != null">rows_init,</if>
+            <if test="rowsUpdate != null">rows_update,</if>
+            <if test="showTitle != null">show_title,</if>
+            <if test="showExcerpt != null">show_excerpt,</if>
+            <if test="showAvatarCount != null">show_avatar_count,</if>
+            <if test="showExtrasCount != null">show_extras_count,</if>
+            <if test="showButtonCount != null">show_button_count,</if>
+            <if test="propNameMode != null">prop_name_mode,</if>
+            <if test="propNameDisabled != null">prop_name_disabled,</if>
+            <if test="propNameCategory != null">prop_name_category,</if>
+            <if test="propNameGroup != null">prop_name_group,</if>
+            <if test="dictCategory != null">dict_category,</if>
+            <if test="dictGroup != null">dict_group,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="mode != null">#{mode},</if>
+            <if test="forceMode != null">#{forceMode},</if>
+            <if test="objId != null and objId != ''">#{objId},</if>
+            <if test="objFavoritesIds != null">#{objFavoritesIds},</if>
+            <if test="objCommentsId != null">#{objCommentsId},</if>
+            <if test="loadWhere != null">#{loadWhere},</if>
+            <if test="rowsInit != null">#{rowsInit},</if>
+            <if test="rowsUpdate != null">#{rowsUpdate},</if>
+            <if test="showTitle != null">#{showTitle},</if>
+            <if test="showExcerpt != null">#{showExcerpt},</if>
+            <if test="showAvatarCount != null">#{showAvatarCount},</if>
+            <if test="showExtrasCount != null">#{showExtrasCount},</if>
+            <if test="showButtonCount != null">#{showButtonCount},</if>
+            <if test="propNameMode != null">#{propNameMode},</if>
+            <if test="propNameDisabled != null">#{propNameDisabled},</if>
+            <if test="propNameCategory != null">#{propNameCategory},</if>
+            <if test="propNameGroup != null">#{propNameGroup},</if>
+            <if test="dictCategory != null">#{dictCategory},</if>
+            <if test="dictGroup != null">#{dictGroup},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaFeList" parameterType="RvaFeList">
+        update rva_fe_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="mode != null">mode = #{mode},</if>
+            <if test="forceMode != null">force_mode = #{forceMode},</if>
+            <if test="objId != null and objId != ''">obj_id = #{objId},</if>
+            <if test="objFavoritesIds != null">obj_favorites_ids = #{objFavoritesIds},</if>
+            <if test="objCommentsId != null">obj_comments_id = #{objCommentsId},</if>
+            <if test="loadWhere != null">load_where = #{loadWhere},</if>
+            <if test="rowsInit != null">rows_init = #{rowsInit},</if>
+            <if test="rowsUpdate != null">rows_update = #{rowsUpdate},</if>
+            <if test="showTitle != null">show_title = #{showTitle},</if>
+            <if test="showExcerpt != null">show_excerpt = #{showExcerpt},</if>
+            <if test="showAvatarCount != null">show_avatar_count = #{showAvatarCount},</if>
+            <if test="showExtrasCount != null">show_extras_count = #{showExtrasCount},</if>
+            <if test="showButtonCount != null">show_button_count = #{showButtonCount},</if>
+            <if test="propNameMode != null">prop_name_mode = #{propNameMode},</if>
+            <if test="propNameDisabled != null">prop_name_disabled = #{propNameDisabled},</if>
+            <if test="propNameCategory != null">prop_name_category = #{propNameCategory},</if>
+            <if test="propNameGroup != null">prop_name_group = #{propNameGroup},</if>
+            <if test="dictCategory != null">dict_category = #{dictCategory},</if>
+            <if test="dictGroup != null">dict_group = #{dictGroup},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaFeListById" parameterType="String">
+        delete from rva_fe_list where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaFeListByIds" parameterType="String">
+        delete from rva_fe_list where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

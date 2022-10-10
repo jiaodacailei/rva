@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaObjectMapper">
+    
+    <resultMap type="RvaObject" id="RvaObjectResult">
+        <result property="id"    column="id"    />
+        <result property="no"    column="no"    />
+        <result property="name"    column="name"    />
+        <result property="idx"    column="idx"    />
+        <result property="module"    column="module"    />
+        <result property="status"    column="status"    />
+        <result property="description"    column="description"    />
+        <result property="propNameName"    column="prop_name_name"    />
+        <result property="propNameDel"    column="prop_name_del"    />
+        <result property="propNameNo"    column="prop_name_no"    />
+        <result property="propNameKey"    column="prop_name_key"    />
+        <result property="propNameCreateBy"    column="prop_name_create_by"    />
+        <result property="propNameCreateTime"    column="prop_name_create_time"    />
+        <result property="propNameUpdateBy"    column="prop_name_update_by"    />
+        <result property="propNameUpdateTime"    column="prop_name_update_time"    />
+        <result property="uniques"    column="uniques"    />
+        <result property="propIndexMax"    column="prop_index_max"    />
+        <result property="relationIndexMax"    column="relation_index_max"    />
+        <result property="data"    column="data"    />
+        <result property="objFavoriteId"    column="obj_favorite_id"    />
+        <result property="objCommentId"    column="obj_comment_id"    />
+        <result property="objCommentLikeId"    column="obj_comment_like_id"    />
+        <result property="propNameFavorites"    column="prop_name_favorites"    />
+        <result property="propNameLikes"    column="prop_name_likes"    />
+        <result property="propNameSubscribes"    column="prop_name_subscribes"    />
+        <result property="propNameFollows"    column="prop_name_follows"    />
+        <result property="propNameReads"    column="prop_name_reads"    />
+        <result property="propNameReaders"    column="prop_name_readers"    />
+        <result property="propNameSticky"    column="prop_name_sticky"    />
+    </resultMap>
+
+    <sql id="selectRvaObjectVo">
+        select id, no, name, idx, module, status, description, prop_name_name, prop_name_del, prop_name_no, prop_name_key, prop_name_create_by, prop_name_create_time, prop_name_update_by, prop_name_update_time, uniques, prop_index_max, relation_index_max, data, obj_favorite_id, obj_comment_id, obj_comment_like_id, prop_name_favorites, prop_name_likes, prop_name_subscribes, prop_name_follows, prop_name_reads, prop_name_readers, prop_name_sticky from rva_object
+    </sql>
+
+    <select id="selectRvaObjectList" parameterType="RvaObject" resultMap="RvaObjectResult">
+        <include refid="selectRvaObjectVo"/>
+        <where>  
+            <if test="no != null  and no != ''"> and no = #{no}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="module != null  and module != ''"> and module = #{module}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="propNameName != null  and propNameName != ''"> and prop_name_name like concat('%', #{propNameName}, '%')</if>
+            <if test="propNameDel != null  and propNameDel != ''"> and prop_name_del = #{propNameDel}</if>
+            <if test="propNameNo != null  and propNameNo != ''"> and prop_name_no = #{propNameNo}</if>
+            <if test="propNameKey != null  and propNameKey != ''"> and prop_name_key = #{propNameKey}</if>
+            <if test="propNameCreateBy != null  and propNameCreateBy != ''"> and prop_name_create_by = #{propNameCreateBy}</if>
+            <if test="propNameCreateTime != null  and propNameCreateTime != ''"> and prop_name_create_time = #{propNameCreateTime}</if>
+            <if test="propNameUpdateBy != null  and propNameUpdateBy != ''"> and prop_name_update_by = #{propNameUpdateBy}</if>
+            <if test="propNameUpdateTime != null  and propNameUpdateTime != ''"> and prop_name_update_time = #{propNameUpdateTime}</if>
+            <if test="uniques != null  and uniques != ''"> and uniques = #{uniques}</if>
+            <if test="propIndexMax != null "> and prop_index_max = #{propIndexMax}</if>
+            <if test="relationIndexMax != null "> and relation_index_max = #{relationIndexMax}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="objFavoriteId != null  and objFavoriteId != ''"> and obj_favorite_id = #{objFavoriteId}</if>
+            <if test="objCommentId != null  and objCommentId != ''"> and obj_comment_id = #{objCommentId}</if>
+            <if test="objCommentLikeId != null  and objCommentLikeId != ''"> and obj_comment_like_id = #{objCommentLikeId}</if>
+            <if test="propNameFavorites != null  and propNameFavorites != ''"> and prop_name_favorites = #{propNameFavorites}</if>
+            <if test="propNameLikes != null  and propNameLikes != ''"> and prop_name_likes = #{propNameLikes}</if>
+            <if test="propNameSubscribes != null  and propNameSubscribes != ''"> and prop_name_subscribes = #{propNameSubscribes}</if>
+            <if test="propNameFollows != null  and propNameFollows != ''"> and prop_name_follows = #{propNameFollows}</if>
+            <if test="propNameReads != null  and propNameReads != ''"> and prop_name_reads = #{propNameReads}</if>
+            <if test="propNameReaders != null  and propNameReaders != ''"> and prop_name_readers = #{propNameReaders}</if>
+            <if test="propNameSticky != null  and propNameSticky != ''"> and prop_name_sticky = #{propNameSticky}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaObjectById" parameterType="String" resultMap="RvaObjectResult">
+        <include refid="selectRvaObjectVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaObject" parameterType="RvaObject">
+        insert into rva_object
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="no != null">no,</if>
+            <if test="name != null">name,</if>
+            <if test="idx != null">idx,</if>
+            <if test="module != null">module,</if>
+            <if test="status != null">status,</if>
+            <if test="description != null">description,</if>
+            <if test="propNameName != null">prop_name_name,</if>
+            <if test="propNameDel != null">prop_name_del,</if>
+            <if test="propNameNo != null">prop_name_no,</if>
+            <if test="propNameKey != null">prop_name_key,</if>
+            <if test="propNameCreateBy != null">prop_name_create_by,</if>
+            <if test="propNameCreateTime != null">prop_name_create_time,</if>
+            <if test="propNameUpdateBy != null">prop_name_update_by,</if>
+            <if test="propNameUpdateTime != null">prop_name_update_time,</if>
+            <if test="uniques != null">uniques,</if>
+            <if test="propIndexMax != null">prop_index_max,</if>
+            <if test="relationIndexMax != null">relation_index_max,</if>
+            <if test="data != null">data,</if>
+            <if test="objFavoriteId != null">obj_favorite_id,</if>
+            <if test="objCommentId != null">obj_comment_id,</if>
+            <if test="objCommentLikeId != null">obj_comment_like_id,</if>
+            <if test="propNameFavorites != null">prop_name_favorites,</if>
+            <if test="propNameLikes != null">prop_name_likes,</if>
+            <if test="propNameSubscribes != null">prop_name_subscribes,</if>
+            <if test="propNameFollows != null">prop_name_follows,</if>
+            <if test="propNameReads != null">prop_name_reads,</if>
+            <if test="propNameReaders != null">prop_name_readers,</if>
+            <if test="propNameSticky != null">prop_name_sticky,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="no != null">#{no},</if>
+            <if test="name != null">#{name},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="module != null">#{module},</if>
+            <if test="status != null">#{status},</if>
+            <if test="description != null">#{description},</if>
+            <if test="propNameName != null">#{propNameName},</if>
+            <if test="propNameDel != null">#{propNameDel},</if>
+            <if test="propNameNo != null">#{propNameNo},</if>
+            <if test="propNameKey != null">#{propNameKey},</if>
+            <if test="propNameCreateBy != null">#{propNameCreateBy},</if>
+            <if test="propNameCreateTime != null">#{propNameCreateTime},</if>
+            <if test="propNameUpdateBy != null">#{propNameUpdateBy},</if>
+            <if test="propNameUpdateTime != null">#{propNameUpdateTime},</if>
+            <if test="uniques != null">#{uniques},</if>
+            <if test="propIndexMax != null">#{propIndexMax},</if>
+            <if test="relationIndexMax != null">#{relationIndexMax},</if>
+            <if test="data != null">#{data},</if>
+            <if test="objFavoriteId != null">#{objFavoriteId},</if>
+            <if test="objCommentId != null">#{objCommentId},</if>
+            <if test="objCommentLikeId != null">#{objCommentLikeId},</if>
+            <if test="propNameFavorites != null">#{propNameFavorites},</if>
+            <if test="propNameLikes != null">#{propNameLikes},</if>
+            <if test="propNameSubscribes != null">#{propNameSubscribes},</if>
+            <if test="propNameFollows != null">#{propNameFollows},</if>
+            <if test="propNameReads != null">#{propNameReads},</if>
+            <if test="propNameReaders != null">#{propNameReaders},</if>
+            <if test="propNameSticky != null">#{propNameSticky},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaObject" parameterType="RvaObject">
+        update rva_object
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="no != null">no = #{no},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="module != null">module = #{module},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="propNameName != null">prop_name_name = #{propNameName},</if>
+            <if test="propNameDel != null">prop_name_del = #{propNameDel},</if>
+            <if test="propNameNo != null">prop_name_no = #{propNameNo},</if>
+            <if test="propNameKey != null">prop_name_key = #{propNameKey},</if>
+            <if test="propNameCreateBy != null">prop_name_create_by = #{propNameCreateBy},</if>
+            <if test="propNameCreateTime != null">prop_name_create_time = #{propNameCreateTime},</if>
+            <if test="propNameUpdateBy != null">prop_name_update_by = #{propNameUpdateBy},</if>
+            <if test="propNameUpdateTime != null">prop_name_update_time = #{propNameUpdateTime},</if>
+            <if test="uniques != null">uniques = #{uniques},</if>
+            <if test="propIndexMax != null">prop_index_max = #{propIndexMax},</if>
+            <if test="relationIndexMax != null">relation_index_max = #{relationIndexMax},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="objFavoriteId != null">obj_favorite_id = #{objFavoriteId},</if>
+            <if test="objCommentId != null">obj_comment_id = #{objCommentId},</if>
+            <if test="objCommentLikeId != null">obj_comment_like_id = #{objCommentLikeId},</if>
+            <if test="propNameFavorites != null">prop_name_favorites = #{propNameFavorites},</if>
+            <if test="propNameLikes != null">prop_name_likes = #{propNameLikes},</if>
+            <if test="propNameSubscribes != null">prop_name_subscribes = #{propNameSubscribes},</if>
+            <if test="propNameFollows != null">prop_name_follows = #{propNameFollows},</if>
+            <if test="propNameReads != null">prop_name_reads = #{propNameReads},</if>
+            <if test="propNameReaders != null">prop_name_readers = #{propNameReaders},</if>
+            <if test="propNameSticky != null">prop_name_sticky = #{propNameSticky},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaObjectById" parameterType="String">
+        delete from rva_object where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaObjectByIds" parameterType="String">
+        delete from rva_object where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

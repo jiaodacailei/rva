@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaDataMapper">
+
+    <sql id="insertSql">
+        insert into ${tableName}
+        (
+        <foreach collection="columnMap" item="value" index="key" separator=",">
+            `${key}`
+        </foreach>
+        )
+        values
+        (
+        <foreach collection="columnMap" item="value" index="key" separator=",">
+            <choose>
+                <when test="@com.ruoyi.rva.framework.util.RvaUtils@isMap(value)">
+                    json_object(
+                    <foreach collection="value" item="jsonValue" index="jsonKey" separator=",">
+                        #{jsonKey}, #{jsonValue}
+                    </foreach>
+                    )
+                </when>
+                <otherwise>#{value}</otherwise>
+            </choose>
+        </foreach>
+        )
+    </sql>
+
+    <insert id="insert" keyProperty="columnMap.id">
+        <include refid="insertSql"></include>
+    </insert>
+
+    <sql id="whereMapSql">
+        <where>
+            <foreach collection="whereMap" item="value" index="key">
+                and
+                <choose>
+                    <when test="value == null">`${key}` is null</when>
+                    <when test="value.toString().indexOf('%') >= 0">`${key}` like #{value}</when>
+                    <otherwise>`${key}` = #{value}</otherwise>
+                </choose>
+            </foreach>
+        </where>
+    </sql>
+
+    <update id="update">
+        ${sql}
+    </update>
+
+    <sql id="updateSql">
+        update ${tableName}
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="columnMap" item="value" index="key">
+                <if test="updateNull or value != null">
+                    <choose>
+                        <when test="@com.ruoyi.rva.framework.util.RvaUtils@isMap(value)">
+                            `${key}` = if (`${key}` is null, json_object (
+                            <foreach collection="value" item="jsonValue" index="jsonKey" separator=",">
+                                #{jsonKey}, #{jsonValue}
+                            </foreach>
+                            ), json_set (`${key}`,
+                            <foreach collection="value" item="jsonValue" index="jsonKey" separator=",">
+                                '$.${jsonKey}', #{jsonValue}
+                            </foreach>
+                            )),
+                        </when>
+                        <otherwise>`${key}` = #{value}, </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+    </sql>
+
+    <update id="updateWhereMap">
+        <include refid="updateSql"></include>
+        <include refid="whereMapSql"></include>
+    </update>
+
+    <update id="updateWhereSql">
+        <include refid="updateSql"></include>
+        <where>
+            ${whereSql}
+        </where>
+    </update>
+
+    <delete id="delete">
+        ${sql}
+    </delete>
+
+    <delete id="deleteWhereMap">
+        delete from ${tableName}
+        <include refid="whereMapSql"></include>
+    </delete>
+
+    <select id="selectList" resultType="com.ruoyi.rva.framework.domain.RvaMap">
+        ${sql}
+    </select>
+
+    <select id="selectLong" resultType="java.lang.Long">
+        ${sql}
+    </select>
+
+    <select id="selectString" resultType="java.lang.String">
+        ${sql}
+    </select>
+
+    <select id="selectDefaultModule" resultType="java.lang.String">
+        select name from rva_module where is_default = 'Y'
+    </select>
+</mapper>

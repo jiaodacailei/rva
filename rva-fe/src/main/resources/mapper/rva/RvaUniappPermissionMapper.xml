@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.fe.mapper.RvaUniappPermissionMapper">
+
+    <resultMap type="RvaUniappPermission" id="RvaUniappPermissionResult">
+        <result property="id"    column="id"    />
+        <result property="uniappId"    column="uniapp_id"    />
+        <result property="name"    column="name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="path"    column="path"    />
+        <result property="query"    column="query"    />
+        <result property="isFrame"    column="is_frame"    />
+        <result property="isCache"    column="is_cache"    />
+        <result property="menuType"    column="menu_type"    />
+        <result property="visible"    column="visible"    />
+        <result property="status"    column="status"    />
+        <result property="icon"    column="icon"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+        <result property="color"    column="color"    />
+    </resultMap>
+
+    <sql id="selectRvaUniappPermissionVo">
+        select id, uniapp_id, name, parent_id, order_num, path, query, is_frame, is_cache, menu_type, visible, status, icon, remark, tenant_id, create_by, create_time, update_by, update_time, data,color from rva_uniapp_permission
+    </sql>
+
+    <select id="selectRvaUniappPermissionList" parameterType="RvaUniappPermission" resultMap="RvaUniappPermissionResult">
+        <include refid="selectRvaUniappPermissionVo"/>
+        <where>
+            <if test="uniappId != null  and uniappId != ''"> and uniapp_id = #{uniappId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="query != null  and query != ''"> and query = #{query}</if>
+            <if test="isFrame != null "> and is_frame = #{isFrame}</if>
+            <if test="isCache != null "> and is_cache = #{isCache}</if>
+            <if test="menuType != null  and menuType != ''"> and menu_type = #{menuType}</if>
+            <if test="visible != null  and visible != ''"> and visible = #{visible}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
+            <if test="tenantId != null  and tenantId != ''"> and tenant_id = #{tenantId}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+
+    <select id="selectRvaUniappPermissionById" parameterType="String" resultMap="RvaUniappPermissionResult">
+        <include refid="selectRvaUniappPermissionVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectList"   resultMap="RvaUniappPermissionResult">
+        SELECT
+            distinct
+            m.id,
+            m.parent_id,
+            m.name,
+            m.path,
+            m.QUERY,
+            m.visible,
+            m.STATUS,
+            m.is_frame,
+            m.is_cache,
+            m.menu_type,
+            m.icon,
+            m.order_num,
+            m.create_time,
+            m.color
+        FROM
+            rva_uniapp_permission m
+                LEFT JOIN rva_uniapp_role_permission rm ON ( rm.permission_id = m.id )
+                LEFT JOIN sys_user_role  ur ON (ur.role_id=rm.role_id)
+        WHERE ur.user_id= #{userId} AND rm.uniapp_id = #{uniAppId}
+        order by m.parent_id, m.order_num
+    </select>
+
+
+    <insert id="insertRvaUniappPermission" parameterType="RvaUniappPermission">
+        insert into rva_uniapp_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="uniappId != null">uniapp_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="path != null">path,</if>
+            <if test="query != null">query,</if>
+            <if test="isFrame != null">is_frame,</if>
+            <if test="isCache != null">is_cache,</if>
+            <if test="menuType != null">menu_type,</if>
+            <if test="visible != null">visible,</if>
+            <if test="status != null">status,</if>
+            <if test="icon != null">icon,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="uniappId != null">#{uniappId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="path != null">#{path},</if>
+            <if test="query != null">#{query},</if>
+            <if test="isFrame != null">#{isFrame},</if>
+            <if test="isCache != null">#{isCache},</if>
+            <if test="menuType != null">#{menuType},</if>
+            <if test="visible != null">#{visible},</if>
+            <if test="status != null">#{status},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaUniappPermission" parameterType="RvaUniappPermission">
+        update rva_uniapp_permission
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uniappId != null">uniapp_id = #{uniappId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="query != null">query = #{query},</if>
+            <if test="isFrame != null">is_frame = #{isFrame},</if>
+            <if test="isCache != null">is_cache = #{isCache},</if>
+            <if test="menuType != null">menu_type = #{menuType},</if>
+            <if test="visible != null">visible = #{visible},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaUniappPermissionById" parameterType="String">
+        delete from rva_uniapp_permission where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaUniappPermissionByIds" parameterType="String">
+        delete from rva_uniapp_permission where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

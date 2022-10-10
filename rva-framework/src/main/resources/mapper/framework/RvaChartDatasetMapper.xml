@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaChartDatasetMapper">
+    
+    <resultMap type="RvaChartDataset" id="RvaChartDatasetResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="crudId"    column="crud_id"    />
+        <result property="chartId"    column="chart_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+        <result property="dataSql"    column="data_sql"    />
+    </resultMap>
+
+    <sql id="selectRvaChartDatasetVo">
+        select id, name, crud_id, chart_id, create_by, create_time, update_by, update_time, data, data_sql from rva_chart_dataset
+    </sql>
+
+    <select id="selectRvaChartDatasetList" parameterType="RvaChartDataset" resultMap="RvaChartDatasetResult">
+        <include refid="selectRvaChartDatasetVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="crudId != null  and crudId != ''"> and crud_id = #{crudId}</if>
+            <if test="chartId != null  and chartId != ''"> and chart_id = #{chartId}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="dataSql != null  and dataSql != ''"> and data_sql = #{dataSql}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaChartDatasetById" parameterType="String" resultMap="RvaChartDatasetResult">
+        <include refid="selectRvaChartDatasetVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaChartDataset" parameterType="RvaChartDataset">
+        insert into rva_chart_dataset
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="crudId != null">crud_id,</if>
+            <if test="chartId != null and chartId != ''">chart_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+            <if test="dataSql != null">data_sql,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="crudId != null">#{crudId},</if>
+            <if test="chartId != null and chartId != ''">#{chartId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+            <if test="dataSql != null">#{dataSql},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaChartDataset" parameterType="RvaChartDataset">
+        update rva_chart_dataset
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="crudId != null">crud_id = #{crudId},</if>
+            <if test="chartId != null and chartId != ''">chart_id = #{chartId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="dataSql != null">data_sql = #{dataSql},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaChartDatasetById" parameterType="String">
+        delete from rva_chart_dataset where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaChartDatasetByIds" parameterType="String">
+        delete from rva_chart_dataset where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

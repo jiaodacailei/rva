@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaChartMapper">
+    
+    <resultMap type="RvaChart" id="RvaChartResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+        <result property="type"    column="type"    />
+        <result property="crudId"    column="crud_id"    />
+        <result property="searchId"    column="search_id"    />
+        <result property="objId"    column="obj_id"    />
+    </resultMap>
+
+    <sql id="selectRvaChartVo">
+        select id, name, create_by, create_time, update_by, update_time, data, type, crud_id, search_id, obj_id from rva_chart
+    </sql>
+
+    <select id="selectRvaChartList" parameterType="RvaChart" resultMap="RvaChartResult">
+        <include refid="selectRvaChartVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="crudId != null  and crudId != ''"> and crud_id = #{crudId}</if>
+            <if test="searchId != null  and searchId != ''"> and search_id = #{searchId}</if>
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaChartById" parameterType="String" resultMap="RvaChartResult">
+        <include refid="selectRvaChartVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaChart" parameterType="RvaChart">
+        insert into rva_chart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="crudId != null">crud_id,</if>
+            <if test="searchId != null">search_id,</if>
+            <if test="objId != null">obj_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="crudId != null">#{crudId},</if>
+            <if test="searchId != null">#{searchId},</if>
+            <if test="objId != null">#{objId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaChart" parameterType="RvaChart">
+        update rva_chart
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="crudId != null">crud_id = #{crudId},</if>
+            <if test="searchId != null">search_id = #{searchId},</if>
+            <if test="objId != null">obj_id = #{objId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaChartById" parameterType="String">
+        delete from rva_chart where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaChartByIds" parameterType="String">
+        delete from rva_chart where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

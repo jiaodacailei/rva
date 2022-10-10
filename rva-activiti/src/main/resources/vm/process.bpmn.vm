@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/test">
+    <process id="${process.id}" name="${process.name}" isExecutable="true">
+        <startEvent id="startevent1"></startEvent>
+        #foreach($task in ${process.tasks})
+            #set($taskCount = ${foreach.index} + 1)
+            #set($nextTaskCount = ${foreach.index} + 2)
+            #set($lastTaskIndex = ${foreach.index} - 1)
+            #set($d = "$")
+            <userTask id="${task.key}" name="${task.name}"></userTask>
+            #if(${foreach.first})
+                <sequenceFlow id="flow${taskCount}" sourceRef="startevent1" targetRef="${task.key}"></sequenceFlow>
+            #elseif(${process.tasks.get($lastTaskIndex).decision} == "Y")
+                <sequenceFlow id="flow${taskCount}" sourceRef="exclusivegateway${process.tasks.get($lastTaskIndex).key}"
+                              targetRef="${task.key}" name="同意"></sequenceFlow>
+            #else
+                <sequenceFlow id="flow${taskCount}" sourceRef="${process.tasks.get($lastTaskIndex).key}"
+                              targetRef="${task.key}"></sequenceFlow>
+            #end
+
+            #if(${task.decision} == "Y")
+                <exclusiveGateway id="exclusivegateway${task.key}" name="${task.name} Exclusive Gateway"
+                                  default="flow${nextTaskCount}"></exclusiveGateway>
+                <sequenceFlow id="flowGW${taskCount}" sourceRef="${task.key}"
+                              targetRef="exclusivegateway${task.key}"></sequenceFlow>
+                #set($targetRef = "endevent1")
+                #if (${task.refuseEnd} == "P")
+                    #set($targetRef = ${process.tasks.get($lastTaskIndex).key})
+                #elseif(${task.refuseEnd} == "F")
+                    #set($targetRef = ${process.tasks.get(0).key})
+                #elseif(${task.refuseEnd} == "O")
+                    #set($targetRef = ${task.refusedOtherTask.key})
+                #elseif(${task.refuseEnd} == "C")
+                    #set($targetRef = ${task.key})
+                #end
+                <sequenceFlow id="flowRefuse${taskCount}" name="拒绝" sourceRef="exclusivegateway${task.key}" targetRef="$targetRef">
+                    #set($result = "u${foreach.index}_${process.module}_${process.id.toLowerCase()}_${task.keyUnderScoreCase}_jg")
+                    #if($task.reviewResultProperty)
+                        #set($result = $task.reviewResultProperty)
+                    #end
+                    <conditionExpression xsi:type="tFormalExpression"><![CDATA[${d}{$result == "N"}]]>
+                    </conditionExpression>
+                </sequenceFlow>
+            #end
+            #if(${foreach.last})
+                #set($lastKey = ${task.key})
+                #if(${task.decision} == "Y")
+                    #set($lastKey = "exclusivegateway${task.key}")
+                #end
+                #set ($taskCount = $taskCount + 1)
+                <sequenceFlow id="flow${taskCount}" sourceRef="${lastKey}" targetRef="endevent1"></sequenceFlow>
+            #end
+        #end
+        <endEvent id="endevent1"></endEvent>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_${process.id}">
+        <bpmndi:BPMNPlane bpmnElement="${process.id}" id="BPMNPlane_${process.id}">
+            #set ($x = 30)
+            #set ($y = 100)
+            #set ($eventY = 1 + $y)
+            #set ($eventWidth = 42)
+            #set ($eventHeight = 42)
+            #set ($taskWidth = 106)
+            #set ($taskHeight = 56)
+            #set ($gateWayWidth = 40)
+            #set ($gateWayHeight = 40)
+            #set ($flowWidth = 60)
+            #set ($flowY = $y + $eventWidth / 2)
+            #set ($taskY = $y + $eventWidth / 2 - $taskHeight / 2)
+            #set ($gateWayY = $y + $eventWidth / 2 - $gateWayHeight / 2)
+            #set ($flowRefuseVerticalMargin = 20)
+            <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+                <omgdc:Bounds height="$eventHeight" width="$eventWidth" x="$x" y="$eventY"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            #set ($x = $x + $eventWidth)
+            #set ($gateWayCount = 0)
+            #foreach($task in ${process.tasks})
+                #if(${task.decision} == "Y")
+                    #set ($gateWayCount = $gateWayCount + 1)
+                #end
+            #end
+            #set ($endX = $x + $eventWidth + ($taskWidth + $flowWidth) * $process.tasks.size() + ($gateWayWidth + $flowWidth) * $gateWayCount + $flowWidth + $eventWidth / 2)
+            #set ($gateWayIndex = 0)
+            #set ($lastTaskX = 0)
+            #set ($firstTaskX = 0)
+            #foreach($task in ${process.tasks})
+                #set($taskCount = ${foreach.index} + 1)
+                #set($nextTaskCount = ${foreach.index} + 2)
+                #set($lastTaskIndex = ${foreach.index} - 1)
+                #set($d = "$")
+
+                <bpmndi:BPMNEdge bpmnElement="flow${taskCount}" id="BPMNEdge_flow${taskCount}">
+                    <omgdi:waypoint x="$x" y="$flowY"></omgdi:waypoint>
+                    #set ($x = $x + $flowWidth)
+                    <omgdi:waypoint x="$x" y="$flowY"></omgdi:waypoint>
+                </bpmndi:BPMNEdge>
+                <bpmndi:BPMNShape bpmnElement="${task.key}" id="BPMNShape_${task.key}">
+                    <omgdc:Bounds height="$taskHeight" width="$taskWidth" x="$x" y="$taskY"></omgdc:Bounds>
+                </bpmndi:BPMNShape>
+                #set ($x = $x + $taskWidth)
+                #if(${foreach.first})
+                    #set ($firstTaskX = $x - $taskWidth / 2)
+                #end
+                #set ($currentTaskX = $x - $taskWidth / 2)
+                #if(${task.decision} == "Y")
+                    <bpmndi:BPMNEdge bpmnElement="flowGW${taskCount}" id="BPMNEdge_flowGW${taskCount}">
+                        <omgdi:waypoint x="$x" y="$flowY"></omgdi:waypoint>
+                        #set ($x = $x + $flowWidth)
+                        <omgdi:waypoint x="$x" y="$flowY"></omgdi:waypoint>
+                    </bpmndi:BPMNEdge>
+                    <bpmndi:BPMNShape bpmnElement="exclusivegateway${task.key}" id="BPMNShape_exclusivegateway${task.key}">
+                        <omgdc:Bounds height="$gateWayHeight" width="$gateWayWidth" x="$x" y="$gateWayY"></omgdc:Bounds>
+                    </bpmndi:BPMNShape>
+                    #set ($x = $x + $gateWayWidth)
+                    #set ($gateWayRefuseX = $x - $gateWayWidth / 2)
+
+                    #if (${task.refuseEnd} == "E")
+                        #set ($gateWayRefuseY = $taskY + $taskHeight + $flowRefuseVerticalMargin * ($gateWayCount - $gateWayIndex))
+                        #set ($gateWayYBottom = $gateWayY + $gateWayHeight)
+                        #set ($yBottom = $y + $taskHeight)
+                        <bpmndi:BPMNEdge bpmnElement="flowRefuse${taskCount}" id="BPMNEdge_flowRefuse${taskCount}">
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayYBottom"></omgdi:waypoint>
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$endX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$endX" y="$yBottom"></omgdi:waypoint>
+                            <bpmndi:BPMNLabel>
+                                #set($labelX = ($gateWayRefuseX + $endX) / 2 - 12)
+                                #set($labelY = $gateWayRefuseY - 14)
+                                <omgdc:Bounds height="14.0" width="24.0" x="$labelX" y="$labelY"></omgdc:Bounds>
+                            </bpmndi:BPMNLabel>
+                        </bpmndi:BPMNEdge>
+                    #elseif(${task.refuseEnd} == "P")
+                        #set ($gateWayRefuseY = $taskY - $flowRefuseVerticalMargin * (1 + $gateWayIndex))
+                        <bpmndi:BPMNEdge bpmnElement="flowRefuse${taskCount}" id="BPMNEdge_flowRefuse${taskCount}">
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$lastTaskX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$lastTaskX" y="$y"></omgdi:waypoint>
+                            <bpmndi:BPMNLabel>
+                                #set($labelX = ($gateWayRefuseX + $lastTaskX) / 2 - 12)
+                                #set($labelY = $gateWayRefuseY - 14)
+                                <omgdc:Bounds height="14.0" width="24.0" x="$labelX" y="$labelY"></omgdc:Bounds>
+                            </bpmndi:BPMNLabel>
+                        </bpmndi:BPMNEdge>
+                    #elseif(${task.refuseEnd} == "O")
+                        #set ($gateWayRefuseY = $taskY - $flowRefuseVerticalMargin * (1 + $gateWayIndex))
+                        #set ($refusedOtherTaskX = $task.refusedOtherTaskX)
+                        <bpmndi:BPMNEdge bpmnElement="flowRefuse${taskCount}" id="BPMNEdge_flowRefuse${taskCount}">
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$refusedOtherTaskX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$refusedOtherTaskX" y="$y"></omgdi:waypoint>
+                            <bpmndi:BPMNLabel>
+                                #set($labelX = ($gateWayRefuseX + $refusedOtherTaskX) / 2 - 12)
+                                #set($labelY = $gateWayRefuseY - 14)
+                                <omgdc:Bounds height="14.0" width="24.0" x="$labelX" y="$labelY"></omgdc:Bounds>
+                            </bpmndi:BPMNLabel>
+                        </bpmndi:BPMNEdge>
+                    #elseif(${task.refuseEnd} == "C")
+                        #set ($gateWayRefuseY = $taskY - $flowRefuseVerticalMargin * (1 + $gateWayIndex))
+                        <bpmndi:BPMNEdge bpmnElement="flowRefuse${taskCount}" id="BPMNEdge_flowRefuse${taskCount}">
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$currentTaskX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$currentTaskX" y="$y"></omgdi:waypoint>
+                            <bpmndi:BPMNLabel>
+                                #set($labelX = ($gateWayRefuseX + $currentTaskX) / 2 - 12)
+                                #set($labelY = $gateWayRefuseY - 14)
+                                <omgdc:Bounds height="14.0" width="24.0" x="$labelX" y="$labelY"></omgdc:Bounds>
+                            </bpmndi:BPMNLabel>
+                        </bpmndi:BPMNEdge>
+                    #else
+                        #set ($gateWayRefuseY = $taskY - $flowRefuseVerticalMargin * (1 + $gateWayIndex))
+                        <bpmndi:BPMNEdge bpmnElement="flowRefuse${taskCount}" id="BPMNEdge_flowRefuse${taskCount}">
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$gateWayRefuseX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$firstTaskX" y="$gateWayRefuseY"></omgdi:waypoint>
+                            <omgdi:waypoint x="$firstTaskX" y="$y"></omgdi:waypoint>
+                            <bpmndi:BPMNLabel>
+                                #set($labelX = ($gateWayRefuseX + $firstTaskX) / 2 - 12)
+                                #set($labelY = $gateWayRefuseY - 14)
+                                <omgdc:Bounds height="14.0" width="24.0" x="$labelX" y="$labelY"></omgdc:Bounds>
+                            </bpmndi:BPMNLabel>
+                        </bpmndi:BPMNEdge>
+                    #end
+                    #set ($gateWayIndex = $gateWayIndex + 1)
+                    #set ($lastTaskX = $x - $gateWayWidth - $flowWidth - $taskWidth / 2)
+                #else
+                    #set ($lastTaskX = $x - $taskWidth / 2)
+                #end
+
+                #if(${foreach.last})
+                    #set ($taskCount = $taskCount + 1)
+                    <bpmndi:BPMNEdge bpmnElement="flow${taskCount}" id="BPMNEdge_flow${taskCount}">
+                        <omgdi:waypoint x="$x" y="$flowY"></omgdi:waypoint>
+                        #set ($x = $x + $flowWidth)
+                        <omgdi:waypoint x="$x" y="$flowY"></omgdi:waypoint>
+                    </bpmndi:BPMNEdge>
+                #end
+            #end
+            <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+                #set ($endX =  $endX - $eventWidth / 2)
+                <omgdc:Bounds height="$eventHeight" width="$eventWidth" x="$endX" y="$eventY"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

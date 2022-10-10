@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaLogMapper">
+    
+    <resultMap type="RvaLog" id="RvaLogResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="viewId"    column="view_id"    />
+        <result property="objId"    column="obj_id"    />
+        <result property="keyValue"    column="key_value"    />
+        <result property="fkValue"    column="fk_value"    />
+        <result property="formData"    column="form_data"    />
+        <result property="viewData"    column="view_data"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaLogVo">
+        select id, name, view_id, obj_id, key_value, fk_value, form_data, view_data, create_by, create_time, data from ${table}
+    </sql>
+
+    <select id="selectRvaLogList" parameterType="RvaLog" resultMap="RvaLogResult">
+        <include refid="selectRvaLogVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="viewId != null  and viewId != ''"> and view_id = #{viewId}</if>
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+            <if test="keyValue != null  and keyValue != ''"> and key_value = #{keyValue}</if>
+            <if test="fkValue != null  and fkValue != ''"> and fk_value = #{fkValue}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="logWhere != null  and logWhere != ''"> and ${logWhere}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaLogById" parameterType="Long" resultMap="RvaLogResult">
+        <include refid="selectRvaLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaLog" parameterType="RvaLog" useGeneratedKeys="true" keyProperty="id">
+        insert into ${table}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="viewId != null and viewId != ''">view_id,</if>
+            <if test="objId != null">obj_id,</if>
+            <if test="keyValue != null">key_value,</if>
+            <if test="fkValue != null">fk_value,</if>
+            <if test="formData != null">form_data,</if>
+            <if test="viewData != null">view_data,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="viewId != null and viewId != ''">#{viewId},</if>
+            <if test="objId != null">#{objId},</if>
+            <if test="keyValue != null">#{keyValue},</if>
+            <if test="fkValue != null">#{fkValue},</if>
+            <if test="formData != null">#{formData},</if>
+            <if test="viewData != null">#{viewData},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaLog" parameterType="RvaLog">
+        update ${table}
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="viewId != null and viewId != ''">view_id = #{viewId},</if>
+            <if test="objId != null">obj_id = #{objId},</if>
+            <if test="keyValue != null">key_value = #{keyValue},</if>
+            <if test="fkValue != null">fk_value = #{fkValue},</if>
+            <if test="formData != null">form_data = #{formData},</if>
+            <if test="viewData != null">view_data = #{viewData},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaLogById" parameterType="Long">
+        delete from ${table} where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaLogByIds" parameterType="String">
+        delete from ${table} where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

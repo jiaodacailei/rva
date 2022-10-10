@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaChartGridMapper">
+    
+    <resultMap type="RvaChartGrid" id="RvaChartGridResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="gridTop"    column="grid_top"    />
+        <result property="gridBottom"    column="grid_bottom"    />
+        <result property="gridLeft"    column="grid_left"    />
+        <result property="gridRight"    column="grid_right"    />
+        <result property="gridWidth"    column="grid_width"    />
+        <result property="gridHeight"    column="grid_height"    />
+        <result property="axisX0"    column="axis_x0"    />
+        <result property="axisX1"    column="axis_x1"    />
+        <result property="axisY0"    column="axis_y0"    />
+        <result property="axisY1"    column="axis_y1"    />
+        <result property="chartId"    column="chart_id"    />
+        <result property="idx"    column="idx"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaChartGridVo">
+        select id, name, grid_top, grid_bottom, grid_left, grid_right, grid_width, grid_height, axis_x0, axis_x1, axis_y0, axis_y1, chart_id, idx, create_by, create_time, update_by, update_time, data from rva_chart_grid
+    </sql>
+
+    <select id="selectRvaChartGridList" parameterType="RvaChartGrid" resultMap="RvaChartGridResult">
+        <include refid="selectRvaChartGridVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="gridTop != null  and gridTop != ''"> and grid_top = #{gridTop}</if>
+            <if test="gridBottom != null  and gridBottom != ''"> and grid_bottom = #{gridBottom}</if>
+            <if test="gridLeft != null  and gridLeft != ''"> and grid_left = #{gridLeft}</if>
+            <if test="gridRight != null  and gridRight != ''"> and grid_right = #{gridRight}</if>
+            <if test="gridWidth != null  and gridWidth != ''"> and grid_width = #{gridWidth}</if>
+            <if test="gridHeight != null  and gridHeight != ''"> and grid_height = #{gridHeight}</if>
+            <if test="axisX0 != null  and axisX0 != ''"> and axis_x0 = #{axisX0}</if>
+            <if test="axisX1 != null  and axisX1 != ''"> and axis_x1 = #{axisX1}</if>
+            <if test="axisY0 != null  and axisY0 != ''"> and axis_y0 = #{axisY0}</if>
+            <if test="axisY1 != null  and axisY1 != ''"> and axis_y1 = #{axisY1}</if>
+            <if test="chartId != null  and chartId != ''"> and chart_id = #{chartId}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaChartGridById" parameterType="String" resultMap="RvaChartGridResult">
+        <include refid="selectRvaChartGridVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaChartGrid" parameterType="RvaChartGrid">
+        insert into rva_chart_grid
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="gridTop != null">grid_top,</if>
+            <if test="gridBottom != null">grid_bottom,</if>
+            <if test="gridLeft != null">grid_left,</if>
+            <if test="gridRight != null">grid_right,</if>
+            <if test="gridWidth != null">grid_width,</if>
+            <if test="gridHeight != null">grid_height,</if>
+            <if test="axisX0 != null">axis_x0,</if>
+            <if test="axisX1 != null">axis_x1,</if>
+            <if test="axisY0 != null">axis_y0,</if>
+            <if test="axisY1 != null">axis_y1,</if>
+            <if test="chartId != null and chartId != ''">chart_id,</if>
+            <if test="idx != null">idx,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="gridTop != null">#{gridTop},</if>
+            <if test="gridBottom != null">#{gridBottom},</if>
+            <if test="gridLeft != null">#{gridLeft},</if>
+            <if test="gridRight != null">#{gridRight},</if>
+            <if test="gridWidth != null">#{gridWidth},</if>
+            <if test="gridHeight != null">#{gridHeight},</if>
+            <if test="axisX0 != null">#{axisX0},</if>
+            <if test="axisX1 != null">#{axisX1},</if>
+            <if test="axisY0 != null">#{axisY0},</if>
+            <if test="axisY1 != null">#{axisY1},</if>
+            <if test="chartId != null and chartId != ''">#{chartId},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaChartGrid" parameterType="RvaChartGrid">
+        update rva_chart_grid
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="gridTop != null">grid_top = #{gridTop},</if>
+            <if test="gridBottom != null">grid_bottom = #{gridBottom},</if>
+            <if test="gridLeft != null">grid_left = #{gridLeft},</if>
+            <if test="gridRight != null">grid_right = #{gridRight},</if>
+            <if test="gridWidth != null">grid_width = #{gridWidth},</if>
+            <if test="gridHeight != null">grid_height = #{gridHeight},</if>
+            <if test="axisX0 != null">axis_x0 = #{axisX0},</if>
+            <if test="axisX1 != null">axis_x1 = #{axisX1},</if>
+            <if test="axisY0 != null">axis_y0 = #{axisY0},</if>
+            <if test="axisY1 != null">axis_y1 = #{axisY1},</if>
+            <if test="chartId != null and chartId != ''">chart_id = #{chartId},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaChartGridById" parameterType="String">
+        delete from rva_chart_grid where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaChartGridByIds" parameterType="String">
+        delete from rva_chart_grid where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

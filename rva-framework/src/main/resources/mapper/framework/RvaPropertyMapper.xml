@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaPropertyMapper">
+    
+    <resultMap type="RvaProperty" id="RvaPropertyResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="typeDetail"    column="type_detail"    />
+        <result property="idGenType"    column="id_gen_type"    />
+        <result property="required"    column="required"    />
+        <result property="dictType"    column="dict_type"    />
+        <result property="dictSelectSingle"    column="dict_select_single"    />
+        <result property="valueMax"    column="value_max"    />
+        <result property="valueMin"    column="value_min"    />
+        <result property="defaultValue"    column="default_value"    />
+        <result property="numberScale"    column="number_scale"    />
+        <result property="idx"    column="idx"    />
+        <result property="description"    column="description"    />
+        <result property="data"    column="data"    />
+        <result property="objId"    column="obj_id"    />
+    </resultMap>
+
+    <sql id="selectRvaPropertyVo">
+        select id, name, type, type_detail, id_gen_type, required, dict_type, dict_select_single, value_max, value_min, default_value, number_scale, idx, description, data, obj_id from rva_property
+    </sql>
+
+    <select id="selectRvaPropertyList" parameterType="RvaProperty" resultMap="RvaPropertyResult">
+        <include refid="selectRvaPropertyVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="typeDetail != null  and typeDetail != ''"> and type_detail = #{typeDetail}</if>
+            <if test="idGenType != null  and idGenType != ''"> and id_gen_type = #{idGenType}</if>
+            <if test="required != null  and required != ''"> and required = #{required}</if>
+            <if test="dictType != null  and dictType != ''"> and dict_type = #{dictType}</if>
+            <if test="dictSelectSingle != null  and dictSelectSingle != ''"> and dict_select_single = #{dictSelectSingle}</if>
+            <if test="valueMax != null  and valueMax != ''"> and value_max = #{valueMax}</if>
+            <if test="valueMin != null  and valueMin != ''"> and value_min = #{valueMin}</if>
+            <if test="defaultValue != null  and defaultValue != ''"> and default_value = #{defaultValue}</if>
+            <if test="numberScale != null "> and number_scale = #{numberScale}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaPropertyById" parameterType="String" resultMap="RvaPropertyResult">
+        <include refid="selectRvaPropertyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaProperty" parameterType="RvaProperty">
+        insert into rva_property
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="typeDetail != null">type_detail,</if>
+            <if test="idGenType != null">id_gen_type,</if>
+            <if test="required != null">required,</if>
+            <if test="dictType != null">dict_type,</if>
+            <if test="dictSelectSingle != null">dict_select_single,</if>
+            <if test="valueMax != null">value_max,</if>
+            <if test="valueMin != null">value_min,</if>
+            <if test="defaultValue != null">default_value,</if>
+            <if test="numberScale != null">number_scale,</if>
+            <if test="idx != null">idx,</if>
+            <if test="description != null">description,</if>
+            <if test="data != null">data,</if>
+            <if test="objId != null and objId != ''">obj_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="typeDetail != null">#{typeDetail},</if>
+            <if test="idGenType != null">#{idGenType},</if>
+            <if test="required != null">#{required},</if>
+            <if test="dictType != null">#{dictType},</if>
+            <if test="dictSelectSingle != null">#{dictSelectSingle},</if>
+            <if test="valueMax != null">#{valueMax},</if>
+            <if test="valueMin != null">#{valueMin},</if>
+            <if test="defaultValue != null">#{defaultValue},</if>
+            <if test="numberScale != null">#{numberScale},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="description != null">#{description},</if>
+            <if test="data != null">#{data},</if>
+            <if test="objId != null and objId != ''">#{objId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaProperty" parameterType="RvaProperty">
+        update rva_property
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="typeDetail != null">type_detail = #{typeDetail},</if>
+            <if test="idGenType != null">id_gen_type = #{idGenType},</if>
+            <if test="required != null">required = #{required},</if>
+            <if test="dictType != null">dict_type = #{dictType},</if>
+            <if test="dictSelectSingle != null">dict_select_single = #{dictSelectSingle},</if>
+            <if test="valueMax != null">value_max = #{valueMax},</if>
+            <if test="valueMin != null">value_min = #{valueMin},</if>
+            <if test="defaultValue != null">default_value = #{defaultValue},</if>
+            <if test="numberScale != null">number_scale = #{numberScale},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="objId != null and objId != ''">obj_id = #{objId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaPropertyById" parameterType="String">
+        delete from rva_property where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaPropertyByIds" parameterType="String">
+        delete from rva_property where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

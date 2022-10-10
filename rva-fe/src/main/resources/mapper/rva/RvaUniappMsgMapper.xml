@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.fe.mapper.RvaUniappMsgMapper">
+
+    <resultMap type="RvaUniappMsg" id="RvaUniappMsgResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="msgUrl"    column="msg_url"    />
+        <result property="sendBy"    column="send_by"    />
+        <result property="msgAppUrl"    column="msg_app_url"    />
+        <result property="receivedBy"    column="received_by"    />
+        <result property="msgGroup"    column="msg_group"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="data"    column="data"    />
+        <result property="pushChannel"    column="push_channel"    />
+        <result property="content"    column="content"    />
+    </resultMap>
+
+    <sql id="selectRvaUniappMsgVo">
+        select id, title, msg_url, send_by, msg_app_url, received_by, msg_group, remark, create_by, create_time, update_by, update_time, tenant_id, data, push_channel,content from rva_uniapp_msg
+    </sql>
+
+    <select id="selectRvaUniappMsgList" parameterType="RvaUniappMsg" resultMap="RvaUniappMsgResult">
+        <include refid="selectRvaUniappMsgVo"/>
+        <where>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="msgUrl != null  and msgUrl != ''"> and msg_url = #{msgUrl}</if>
+            <if test="sendBy != null "> and send_by = #{sendBy}</if>
+            <if test="msgAppUrl != null  and msgAppUrl != ''"> and msg_app_url = #{msgAppUrl}</if>
+            <if test="receivedBy != null  and receivedBy != ''"> and received_by = #{receivedBy}</if>
+            <if test="msgGroup != null  and msgGroup != ''"> and msg_group = #{msgGroup}</if>
+            <if test="tenantId != null  and tenantId != ''"> and tenant_id = #{tenantId}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="pushChannel != null  and pushChannel != ''"> and push_channel = #{pushChannel}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+        </where>
+    </select>
+
+    <select id="selectRvaUniappMsgById" parameterType="Long" resultMap="RvaUniappMsgResult">
+        <include refid="selectRvaUniappMsgVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRvaUniappMsg" parameterType="RvaUniappMsg" useGeneratedKeys="true" keyProperty="id">
+        insert into rva_uniapp_msg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="msgUrl != null">msg_url,</if>
+            <if test="sendBy != null">send_by,</if>
+            <if test="msgAppUrl != null">msg_app_url,</if>
+            <if test="receivedBy != null">received_by,</if>
+            <if test="msgGroup != null">msg_group,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="data != null">data,</if>
+            <if test="pushChannel != null">push_channel,</if>
+            <if test="content != null">content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="msgUrl != null">#{msgUrl},</if>
+            <if test="sendBy != null">#{sendBy},</if>
+            <if test="msgAppUrl != null">#{msgAppUrl},</if>
+            <if test="receivedBy != null">#{receivedBy},</if>
+            <if test="msgGroup != null">#{msgGroup},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="data != null">#{data},</if>
+            <if test="pushChannel != null">#{pushChannel},</if>
+            <if test="content != null">#{content},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaUniappMsg" parameterType="RvaUniappMsg">
+        update rva_uniapp_msg
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="msgUrl != null">msg_url = #{msgUrl},</if>
+            <if test="sendBy != null">send_by = #{sendBy},</if>
+            <if test="msgAppUrl != null">msg_app_url = #{msgAppUrl},</if>
+            <if test="receivedBy != null">received_by = #{receivedBy},</if>
+            <if test="msgGroup != null">msg_group = #{msgGroup},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="pushChannel != null">push_channel = #{pushChannel},</if>
+            <if test="content != null">content = #{content},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaUniappMsgById" parameterType="Long">
+        delete from rva_uniapp_msg where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaUniappMsgByIds" parameterType="String">
+        delete from rva_uniapp_msg where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

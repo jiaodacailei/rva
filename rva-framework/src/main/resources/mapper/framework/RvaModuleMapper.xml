@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaModuleMapper">
+    
+    <resultMap type="RvaModule" id="RvaModuleResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="idx"    column="idx"    />
+        <result property="description"    column="description"    />
+        <result property="isDefault"    column="is_default"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaModuleVo">
+        select id, name, idx, description, is_default, data from rva_module
+    </sql>
+
+    <select id="selectRvaModuleList" parameterType="RvaModule" resultMap="RvaModuleResult">
+        <include refid="selectRvaModuleVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="isDefault != null  and isDefault != ''"> and is_default = #{isDefault}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaModuleById" parameterType="String" resultMap="RvaModuleResult">
+        <include refid="selectRvaModuleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaModule" parameterType="RvaModule">
+        insert into rva_module
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="idx != null">idx,</if>
+            <if test="description != null">description,</if>
+            <if test="isDefault != null">is_default,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="description != null">#{description},</if>
+            <if test="isDefault != null">#{isDefault},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaModule" parameterType="RvaModule">
+        update rva_module
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="isDefault != null">is_default = #{isDefault},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaModuleById" parameterType="String">
+        delete from rva_module where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaModuleByIds" parameterType="String">
+        delete from rva_module where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaViewMapper">
+    
+    <resultMap type="RvaView" id="RvaViewResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="idx"    column="idx"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="objId"    column="obj_id"    />
+        <result property="formColumns"    column="form_columns"    />
+        <result property="formReadonly"    column="form_readonly"    />
+        <result property="listRows"    column="list_rows"    />
+        <result property="listPaging"    column="list_paging"    />
+        <result property="data"    column="data"    />
+        <result property="loadUrl"    column="load_url"    />
+        <result property="loadBeforeSql"    column="load_before_sql"    />
+        <result property="formSubmitUrl"    column="form_submit_url"    />
+        <result property="loadAfterSql"    column="load_after_sql"    />
+        <result property="formSubmitBeforeSql"    column="form_submit_before_sql"    />
+        <result property="loadSql"    column="load_sql"    />
+        <result property="formSubmitAfterSql"    column="form_submit_after_sql"    />
+        <result property="loadWhere"    column="load_where"    />
+    </resultMap>
+
+    <sql id="selectRvaViewVo">
+        select id, name, type, idx, width, height, obj_id, form_columns, form_readonly, list_rows, list_paging, data, load_url, load_before_sql, form_submit_url, load_after_sql, form_submit_before_sql, load_sql, form_submit_after_sql, load_where from rva_view
+    </sql>
+
+    <select id="selectRvaViewList" parameterType="RvaView" resultMap="RvaViewResult">
+        <include refid="selectRvaViewVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+            <if test="formColumns != null "> and form_columns = #{formColumns}</if>
+            <if test="formReadonly != null  and formReadonly != ''"> and form_readonly = #{formReadonly}</if>
+            <if test="listRows != null "> and list_rows = #{listRows}</if>
+            <if test="listPaging != null  and listPaging != ''"> and list_paging = #{listPaging}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="loadUrl != null  and loadUrl != ''"> and load_url = #{loadUrl}</if>
+            <if test="loadBeforeSql != null  and loadBeforeSql != ''"> and load_before_sql = #{loadBeforeSql}</if>
+            <if test="formSubmitUrl != null  and formSubmitUrl != ''"> and form_submit_url = #{formSubmitUrl}</if>
+            <if test="loadAfterSql != null  and loadAfterSql != ''"> and load_after_sql = #{loadAfterSql}</if>
+            <if test="formSubmitBeforeSql != null  and formSubmitBeforeSql != ''"> and form_submit_before_sql = #{formSubmitBeforeSql}</if>
+            <if test="loadSql != null  and loadSql != ''"> and load_sql = #{loadSql}</if>
+            <if test="formSubmitAfterSql != null  and formSubmitAfterSql != ''"> and form_submit_after_sql = #{formSubmitAfterSql}</if>
+            <if test="loadWhere != null  and loadWhere != ''"> and load_where = #{loadWhere}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaViewById" parameterType="String" resultMap="RvaViewResult">
+        <include refid="selectRvaViewVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaView" parameterType="RvaView">
+        insert into rva_view
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="idx != null">idx,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="objId != null and objId != ''">obj_id,</if>
+            <if test="formColumns != null">form_columns,</if>
+            <if test="formReadonly != null">form_readonly,</if>
+            <if test="listRows != null">list_rows,</if>
+            <if test="listPaging != null">list_paging,</if>
+            <if test="data != null">data,</if>
+            <if test="loadUrl != null">load_url,</if>
+            <if test="loadBeforeSql != null">load_before_sql,</if>
+            <if test="formSubmitUrl != null">form_submit_url,</if>
+            <if test="loadAfterSql != null">load_after_sql,</if>
+            <if test="formSubmitBeforeSql != null">form_submit_before_sql,</if>
+            <if test="loadSql != null">load_sql,</if>
+            <if test="formSubmitAfterSql != null">form_submit_after_sql,</if>
+            <if test="loadWhere != null">load_where,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="objId != null and objId != ''">#{objId},</if>
+            <if test="formColumns != null">#{formColumns},</if>
+            <if test="formReadonly != null">#{formReadonly},</if>
+            <if test="listRows != null">#{listRows},</if>
+            <if test="listPaging != null">#{listPaging},</if>
+            <if test="data != null">#{data},</if>
+            <if test="loadUrl != null">#{loadUrl},</if>
+            <if test="loadBeforeSql != null">#{loadBeforeSql},</if>
+            <if test="formSubmitUrl != null">#{formSubmitUrl},</if>
+            <if test="loadAfterSql != null">#{loadAfterSql},</if>
+            <if test="formSubmitBeforeSql != null">#{formSubmitBeforeSql},</if>
+            <if test="loadSql != null">#{loadSql},</if>
+            <if test="formSubmitAfterSql != null">#{formSubmitAfterSql},</if>
+            <if test="loadWhere != null">#{loadWhere},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaView" parameterType="RvaView">
+        update rva_view
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="objId != null and objId != ''">obj_id = #{objId},</if>
+            <if test="formColumns != null">form_columns = #{formColumns},</if>
+            <if test="formReadonly != null">form_readonly = #{formReadonly},</if>
+            <if test="listRows != null">list_rows = #{listRows},</if>
+            <if test="listPaging != null">list_paging = #{listPaging},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="loadUrl != null">load_url = #{loadUrl},</if>
+            <if test="loadBeforeSql != null">load_before_sql = #{loadBeforeSql},</if>
+            <if test="formSubmitUrl != null">form_submit_url = #{formSubmitUrl},</if>
+            <if test="loadAfterSql != null">load_after_sql = #{loadAfterSql},</if>
+            <if test="formSubmitBeforeSql != null">form_submit_before_sql = #{formSubmitBeforeSql},</if>
+            <if test="loadSql != null">load_sql = #{loadSql},</if>
+            <if test="formSubmitAfterSql != null">form_submit_after_sql = #{formSubmitAfterSql},</if>
+            <if test="loadWhere != null">load_where = #{loadWhere},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaViewById" parameterType="String">
+        delete from rva_view where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaViewByIds" parameterType="String">
+        delete from rva_view where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaViewpropertyMapper">
+    
+    <resultMap type="RvaViewproperty" id="RvaViewpropertyResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="idx"    column="idx"    />
+        <result property="propId"    column="prop_id"    />
+        <result property="propSubId"    column="prop_sub_id"    />
+        <result property="relationId"    column="relation_id"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="formInitValue"    column="form_init_value"    />
+        <result property="formInitReplaceEmpty"    column="form_init_replace_empty"    />
+        <result property="formInitReplace"    column="form_init_replace"    />
+        <result property="formSubmitValue"    column="form_submit_value"    />
+        <result property="formSubmitReplaceEmpty"    column="form_submit_replace_empty"    />
+        <result property="formSubmitReplace"    column="form_submit_replace"    />
+        <result property="formSubmit"    column="form_submit"    />
+        <result property="formRowSpan"    column="form_row_span"    />
+        <result property="formColSpan"    column="form_col_span"    />
+        <result property="formRequired"    column="form_required"    />
+        <result property="formValueMax"    column="form_value_max"    />
+        <result property="formValueMin"    column="form_value_min"    />
+        <result property="formReadonly"    column="form_readonly"    />
+        <result property="formRelatedCrud"    column="form_related_crud"    />
+        <result property="formSelectorSingle"    column="form_selector_single"    />
+        <result property="formInputorSearch"    column="form_inputor_search"    />
+        <result property="formInputorData"    column="form_inputor_data"    />
+        <result property="formFilterProp"    column="form_filter_prop"    />
+        <result property="formFilterValue"    column="form_filter_value"    />
+        <result property="listOrderType"    column="list_order_type"    />
+        <result property="listOrderIdx"    column="list_order_idx"    />
+        <result property="listSql"    column="list_sql"    />
+        <result property="listExpression"    column="list_expression"    />
+        <result property="listButtons"    column="list_buttons"    />
+        <result property="searchFilter"    column="search_filter"    />
+        <result property="searchType"    column="search_type"    />
+        <result property="searchExpression"    column="search_expression"    />
+        <result property="numberScale"    column="number_scale"    />
+        <result property="dictType"    column="dict_type"    />
+        <result property="viewId"    column="view_id"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaViewpropertyVo">
+        select id, name, type, idx, prop_id, prop_sub_id, relation_id, width, height, form_init_value, form_init_replace_empty, form_init_replace, form_submit_value, form_submit_replace_empty, form_submit_replace, form_submit, form_row_span, form_col_span, form_required, form_value_max, form_value_min, form_readonly, form_related_crud, form_selector_single, form_inputor_search, form_inputor_data, form_filter_prop, form_filter_value, list_order_type, list_order_idx, list_sql, list_expression, list_buttons, search_filter, search_type, search_expression, number_scale, dict_type, view_id, data from rva_viewproperty
+    </sql>
+
+    <select id="selectRvaViewpropertyList" parameterType="RvaViewproperty" resultMap="RvaViewpropertyResult">
+        <include refid="selectRvaViewpropertyVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="propId != null  and propId != ''"> and prop_id = #{propId}</if>
+            <if test="propSubId != null  and propSubId != ''"> and prop_sub_id = #{propSubId}</if>
+            <if test="relationId != null  and relationId != ''"> and relation_id = #{relationId}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="formInitValue != null  and formInitValue != ''"> and form_init_value = #{formInitValue}</if>
+            <if test="formInitReplaceEmpty != null  and formInitReplaceEmpty != ''"> and form_init_replace_empty = #{formInitReplaceEmpty}</if>
+            <if test="formInitReplace != null  and formInitReplace != ''"> and form_init_replace = #{formInitReplace}</if>
+            <if test="formSubmitValue != null  and formSubmitValue != ''"> and form_submit_value = #{formSubmitValue}</if>
+            <if test="formSubmitReplaceEmpty != null  and formSubmitReplaceEmpty != ''"> and form_submit_replace_empty = #{formSubmitReplaceEmpty}</if>
+            <if test="formSubmitReplace != null  and formSubmitReplace != ''"> and form_submit_replace = #{formSubmitReplace}</if>
+            <if test="formSubmit != null  and formSubmit != ''"> and form_submit = #{formSubmit}</if>
+            <if test="formRowSpan != null "> and form_row_span = #{formRowSpan}</if>
+            <if test="formColSpan != null "> and form_col_span = #{formColSpan}</if>
+            <if test="formRequired != null  and formRequired != ''"> and form_required = #{formRequired}</if>
+            <if test="formValueMax != null  and formValueMax != ''"> and form_value_max = #{formValueMax}</if>
+            <if test="formValueMin != null  and formValueMin != ''"> and form_value_min = #{formValueMin}</if>
+            <if test="formReadonly != null  and formReadonly != ''"> and form_readonly = #{formReadonly}</if>
+            <if test="formRelatedCrud != null  and formRelatedCrud != ''"> and form_related_crud = #{formRelatedCrud}</if>
+            <if test="formSelectorSingle != null  and formSelectorSingle != ''"> and form_selector_single = #{formSelectorSingle}</if>
+            <if test="formInputorSearch != null  and formInputorSearch != ''"> and form_inputor_search = #{formInputorSearch}</if>
+            <if test="formInputorData != null  and formInputorData != ''"> and form_inputor_data = #{formInputorData}</if>
+            <if test="formFilterProp != null  and formFilterProp != ''"> and form_filter_prop = #{formFilterProp}</if>
+            <if test="formFilterValue != null  and formFilterValue != ''"> and form_filter_value = #{formFilterValue}</if>
+            <if test="listOrderType != null  and listOrderType != ''"> and list_order_type = #{listOrderType}</if>
+            <if test="listOrderIdx != null "> and list_order_idx = #{listOrderIdx}</if>
+            <if test="listSql != null  and listSql != ''"> and list_sql = #{listSql}</if>
+            <if test="listExpression != null  and listExpression != ''"> and list_expression = #{listExpression}</if>
+            <if test="listButtons != null  and listButtons != ''"> and list_buttons = #{listButtons}</if>
+            <if test="searchFilter != null  and searchFilter != ''"> and search_filter = #{searchFilter}</if>
+            <if test="searchType != null  and searchType != ''"> and search_type = #{searchType}</if>
+            <if test="searchExpression != null  and searchExpression != ''"> and search_expression = #{searchExpression}</if>
+            <if test="numberScale != null "> and number_scale = #{numberScale}</if>
+            <if test="dictType != null  and dictType != ''"> and dict_type = #{dictType}</if>
+            <if test="viewId != null  and viewId != ''"> and view_id = #{viewId}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaViewpropertyById" parameterType="String" resultMap="RvaViewpropertyResult">
+        <include refid="selectRvaViewpropertyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaViewproperty" parameterType="RvaViewproperty">
+        insert into rva_viewproperty
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="idx != null">idx,</if>
+            <if test="propId != null">prop_id,</if>
+            <if test="propSubId != null">prop_sub_id,</if>
+            <if test="relationId != null">relation_id,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="formInitValue != null">form_init_value,</if>
+            <if test="formInitReplaceEmpty != null">form_init_replace_empty,</if>
+            <if test="formInitReplace != null">form_init_replace,</if>
+            <if test="formSubmitValue != null">form_submit_value,</if>
+            <if test="formSubmitReplaceEmpty != null">form_submit_replace_empty,</if>
+            <if test="formSubmitReplace != null">form_submit_replace,</if>
+            <if test="formSubmit != null">form_submit,</if>
+            <if test="formRowSpan != null">form_row_span,</if>
+            <if test="formColSpan != null">form_col_span,</if>
+            <if test="formRequired != null">form_required,</if>
+            <if test="formValueMax != null">form_value_max,</if>
+            <if test="formValueMin != null">form_value_min,</if>
+            <if test="formReadonly != null">form_readonly,</if>
+            <if test="formRelatedCrud != null">form_related_crud,</if>
+            <if test="formSelectorSingle != null">form_selector_single,</if>
+            <if test="formInputorSearch != null">form_inputor_search,</if>
+            <if test="formInputorData != null">form_inputor_data,</if>
+            <if test="formFilterProp != null">form_filter_prop,</if>
+            <if test="formFilterValue != null">form_filter_value,</if>
+            <if test="listOrderType != null">list_order_type,</if>
+            <if test="listOrderIdx != null">list_order_idx,</if>
+            <if test="listSql != null">list_sql,</if>
+            <if test="listExpression != null">list_expression,</if>
+            <if test="listButtons != null">list_buttons,</if>
+            <if test="searchFilter != null">search_filter,</if>
+            <if test="searchType != null">search_type,</if>
+            <if test="searchExpression != null">search_expression,</if>
+            <if test="numberScale != null">number_scale,</if>
+            <if test="dictType != null">dict_type,</if>
+            <if test="viewId != null and viewId != ''">view_id,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="propId != null">#{propId},</if>
+            <if test="propSubId != null">#{propSubId},</if>
+            <if test="relationId != null">#{relationId},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="formInitValue != null">#{formInitValue},</if>
+            <if test="formInitReplaceEmpty != null">#{formInitReplaceEmpty},</if>
+            <if test="formInitReplace != null">#{formInitReplace},</if>
+            <if test="formSubmitValue != null">#{formSubmitValue},</if>
+            <if test="formSubmitReplaceEmpty != null">#{formSubmitReplaceEmpty},</if>
+            <if test="formSubmitReplace != null">#{formSubmitReplace},</if>
+            <if test="formSubmit != null">#{formSubmit},</if>
+            <if test="formRowSpan != null">#{formRowSpan},</if>
+            <if test="formColSpan != null">#{formColSpan},</if>
+            <if test="formRequired != null">#{formRequired},</if>
+            <if test="formValueMax != null">#{formValueMax},</if>
+            <if test="formValueMin != null">#{formValueMin},</if>
+            <if test="formReadonly != null">#{formReadonly},</if>
+            <if test="formRelatedCrud != null">#{formRelatedCrud},</if>
+            <if test="formSelectorSingle != null">#{formSelectorSingle},</if>
+            <if test="formInputorSearch != null">#{formInputorSearch},</if>
+            <if test="formInputorData != null">#{formInputorData},</if>
+            <if test="formFilterProp != null">#{formFilterProp},</if>
+            <if test="formFilterValue != null">#{formFilterValue},</if>
+            <if test="listOrderType != null">#{listOrderType},</if>
+            <if test="listOrderIdx != null">#{listOrderIdx},</if>
+            <if test="listSql != null">#{listSql},</if>
+            <if test="listExpression != null">#{listExpression},</if>
+            <if test="listButtons != null">#{listButtons},</if>
+            <if test="searchFilter != null">#{searchFilter},</if>
+            <if test="searchType != null">#{searchType},</if>
+            <if test="searchExpression != null">#{searchExpression},</if>
+            <if test="numberScale != null">#{numberScale},</if>
+            <if test="dictType != null">#{dictType},</if>
+            <if test="viewId != null and viewId != ''">#{viewId},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaViewproperty" parameterType="RvaViewproperty">
+        update rva_viewproperty
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="propId != null">prop_id = #{propId},</if>
+            <if test="propSubId != null">prop_sub_id = #{propSubId},</if>
+            <if test="relationId != null">relation_id = #{relationId},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="formInitValue != null">form_init_value = #{formInitValue},</if>
+            <if test="formInitReplaceEmpty != null">form_init_replace_empty = #{formInitReplaceEmpty},</if>
+            <if test="formInitReplace != null">form_init_replace = #{formInitReplace},</if>
+            <if test="formSubmitValue != null">form_submit_value = #{formSubmitValue},</if>
+            <if test="formSubmitReplaceEmpty != null">form_submit_replace_empty = #{formSubmitReplaceEmpty},</if>
+            <if test="formSubmitReplace != null">form_submit_replace = #{formSubmitReplace},</if>
+            <if test="formSubmit != null">form_submit = #{formSubmit},</if>
+            <if test="formRowSpan != null">form_row_span = #{formRowSpan},</if>
+            <if test="formColSpan != null">form_col_span = #{formColSpan},</if>
+            <if test="formRequired != null">form_required = #{formRequired},</if>
+            <if test="formValueMax != null">form_value_max = #{formValueMax},</if>
+            <if test="formValueMin != null">form_value_min = #{formValueMin},</if>
+            <if test="formReadonly != null">form_readonly = #{formReadonly},</if>
+            <if test="formRelatedCrud != null">form_related_crud = #{formRelatedCrud},</if>
+            <if test="formSelectorSingle != null">form_selector_single = #{formSelectorSingle},</if>
+            <if test="formInputorSearch != null">form_inputor_search = #{formInputorSearch},</if>
+            <if test="formInputorData != null">form_inputor_data = #{formInputorData},</if>
+            <if test="formFilterProp != null">form_filter_prop = #{formFilterProp},</if>
+            <if test="formFilterValue != null">form_filter_value = #{formFilterValue},</if>
+            <if test="listOrderType != null">list_order_type = #{listOrderType},</if>
+            <if test="listOrderIdx != null">list_order_idx = #{listOrderIdx},</if>
+            <if test="listSql != null">list_sql = #{listSql},</if>
+            <if test="listExpression != null">list_expression = #{listExpression},</if>
+            <if test="listButtons != null">list_buttons = #{listButtons},</if>
+            <if test="searchFilter != null">search_filter = #{searchFilter},</if>
+            <if test="searchType != null">search_type = #{searchType},</if>
+            <if test="searchExpression != null">search_expression = #{searchExpression},</if>
+            <if test="numberScale != null">number_scale = #{numberScale},</if>
+            <if test="dictType != null">dict_type = #{dictType},</if>
+            <if test="viewId != null and viewId != ''">view_id = #{viewId},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaViewpropertyById" parameterType="String">
+        delete from rva_viewproperty where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaViewpropertyByIds" parameterType="String">
+        delete from rva_viewproperty where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

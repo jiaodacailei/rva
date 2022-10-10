@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaKpiMapper">
+    
+    <resultMap type="RvaKpi" id="RvaKpiResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="searchId"    column="search_id"    />
+        <result property="objId"    column="obj_id"    />
+        <result property="dataSql"    column="data_sql"    />
+        <result property="template"    column="template"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaKpiVo">
+        select id, name, search_id, obj_id, data_sql, template, create_by, create_time, update_by, update_time, data from rva_kpi
+    </sql>
+
+    <select id="selectRvaKpiList" parameterType="RvaKpi" resultMap="RvaKpiResult">
+        <include refid="selectRvaKpiVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="searchId != null  and searchId != ''"> and search_id = #{searchId}</if>
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+            <if test="dataSql != null  and dataSql != ''"> and data_sql = #{dataSql}</if>
+            <if test="template != null  and template != ''"> and template = #{template}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaKpiById" parameterType="String" resultMap="RvaKpiResult">
+        <include refid="selectRvaKpiVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaKpi" parameterType="RvaKpi">
+        insert into rva_kpi
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="searchId != null">search_id,</if>
+            <if test="objId != null">obj_id,</if>
+            <if test="dataSql != null">data_sql,</if>
+            <if test="template != null">template,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="searchId != null">#{searchId},</if>
+            <if test="objId != null">#{objId},</if>
+            <if test="dataSql != null">#{dataSql},</if>
+            <if test="template != null">#{template},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaKpi" parameterType="RvaKpi">
+        update rva_kpi
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="searchId != null">search_id = #{searchId},</if>
+            <if test="objId != null">obj_id = #{objId},</if>
+            <if test="dataSql != null">data_sql = #{dataSql},</if>
+            <if test="template != null">template = #{template},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaKpiById" parameterType="String">
+        delete from rva_kpi where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaKpiByIds" parameterType="String">
+        delete from rva_kpi where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

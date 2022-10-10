@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaChartFormulaMapper">
+    
+    <resultMap type="RvaChartFormula" id="RvaChartFormulaResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+        <result property="type"    column="type"    />
+        <result property="applicableTo"    column="applicable_to"    />
+        <result property="formula"    column="formula"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+
+    <sql id="selectRvaChartFormulaVo">
+        select id, name, create_by, create_time, update_by, update_time, data, type, applicable_to, formula, description from rva_chart_formula
+    </sql>
+
+    <select id="selectRvaChartFormulaList" parameterType="RvaChartFormula" resultMap="RvaChartFormulaResult">
+        <include refid="selectRvaChartFormulaVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="applicableTo != null  and applicableTo != ''"> and applicable_to = #{applicableTo}</if>
+            <if test="formula != null  and formula != ''"> and formula = #{formula}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaChartFormulaById" parameterType="Long" resultMap="RvaChartFormulaResult">
+        <include refid="selectRvaChartFormulaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaChartFormula" parameterType="RvaChartFormula" useGeneratedKeys="true" keyProperty="id">
+        insert into rva_chart_formula
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+            <if test="type != null">type,</if>
+            <if test="applicableTo != null">applicable_to,</if>
+            <if test="formula != null and formula != ''">formula,</if>
+            <if test="description != null">description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+            <if test="type != null">#{type},</if>
+            <if test="applicableTo != null">#{applicableTo},</if>
+            <if test="formula != null and formula != ''">#{formula},</if>
+            <if test="description != null">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaChartFormula" parameterType="RvaChartFormula">
+        update rva_chart_formula
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="applicableTo != null">applicable_to = #{applicableTo},</if>
+            <if test="formula != null and formula != ''">formula = #{formula},</if>
+            <if test="description != null">description = #{description},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaChartFormulaById" parameterType="Long">
+        delete from rva_chart_formula where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaChartFormulaByIds" parameterType="String">
+        delete from rva_chart_formula where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

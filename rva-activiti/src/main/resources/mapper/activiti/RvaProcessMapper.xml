@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.activiti.mapper.RvaProcessMapper">
+    
+    <resultMap type="RvaProcess" id="RvaProcessResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="relatedObjId"    column="related_obj_id"    />
+        <result property="objId"    column="obj_id"    />
+        <result property="module"    column="module"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaProcessVo">
+        select id, name, related_obj_id, obj_id, module, create_by, create_time, update_by, update_time, data from rva_process
+    </sql>
+
+    <select id="selectRvaProcessList" parameterType="RvaProcess" resultMap="RvaProcessResult">
+        <include refid="selectRvaProcessVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="relatedObjId != null  and relatedObjId != ''"> and related_obj_id = #{relatedObjId}</if>
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+            <if test="module != null  and module != ''"> and module = #{module}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaProcessById" parameterType="String" resultMap="RvaProcessResult">
+        <include refid="selectRvaProcessVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaProcess" parameterType="RvaProcess">
+        insert into rva_process
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="relatedObjId != null">related_obj_id,</if>
+            <if test="objId != null">obj_id,</if>
+            <if test="module != null">module,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="relatedObjId != null">#{relatedObjId},</if>
+            <if test="objId != null">#{objId},</if>
+            <if test="module != null">#{module},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaProcess" parameterType="RvaProcess">
+        update rva_process
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="relatedObjId != null">related_obj_id = #{relatedObjId},</if>
+            <if test="objId != null">obj_id = #{objId},</if>
+            <if test="module != null">module = #{module},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaProcessById" parameterType="String">
+        delete from rva_process where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaProcessByIds" parameterType="String">
+        delete from rva_process where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

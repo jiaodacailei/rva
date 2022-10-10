@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaChartDatacolumnMapper">
+    
+    <resultMap type="RvaChartDatacolumn" id="RvaChartDatacolumnResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="viewpropertyId"    column="viewproperty_id"    />
+        <result property="formula"    column="formula"    />
+        <result property="optionDict"    column="option_dict"    />
+        <result property="optionSql"    column="option_sql"    />
+        <result property="idx"    column="idx"    />
+        <result property="chartDatasetId"    column="chart_dataset_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaChartDatacolumnVo">
+        select id, name, type, viewproperty_id, formula, option_dict, option_sql, idx, chart_dataset_id, create_by, create_time, update_by, update_time, data from rva_chart_datacolumn
+    </sql>
+
+    <select id="selectRvaChartDatacolumnList" parameterType="RvaChartDatacolumn" resultMap="RvaChartDatacolumnResult">
+        <include refid="selectRvaChartDatacolumnVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="viewpropertyId != null  and viewpropertyId != ''"> and viewproperty_id = #{viewpropertyId}</if>
+            <if test="formula != null  and formula != ''"> and formula = #{formula}</if>
+            <if test="optionDict != null  and optionDict != ''"> and option_dict = #{optionDict}</if>
+            <if test="optionSql != null  and optionSql != ''"> and option_sql = #{optionSql}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="chartDatasetId != null  and chartDatasetId != ''"> and chart_dataset_id = #{chartDatasetId}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaChartDatacolumnById" parameterType="String" resultMap="RvaChartDatacolumnResult">
+        <include refid="selectRvaChartDatacolumnVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaChartDatacolumn" parameterType="RvaChartDatacolumn">
+        insert into rva_chart_datacolumn
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="type != null">type,</if>
+            <if test="viewpropertyId != null">viewproperty_id,</if>
+            <if test="formula != null">formula,</if>
+            <if test="optionDict != null">option_dict,</if>
+            <if test="optionSql != null">option_sql,</if>
+            <if test="idx != null">idx,</if>
+            <if test="chartDatasetId != null and chartDatasetId != ''">chart_dataset_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="viewpropertyId != null">#{viewpropertyId},</if>
+            <if test="formula != null">#{formula},</if>
+            <if test="optionDict != null">#{optionDict},</if>
+            <if test="optionSql != null">#{optionSql},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="chartDatasetId != null and chartDatasetId != ''">#{chartDatasetId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaChartDatacolumn" parameterType="RvaChartDatacolumn">
+        update rva_chart_datacolumn
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="viewpropertyId != null">viewproperty_id = #{viewpropertyId},</if>
+            <if test="formula != null">formula = #{formula},</if>
+            <if test="optionDict != null">option_dict = #{optionDict},</if>
+            <if test="optionSql != null">option_sql = #{optionSql},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="chartDatasetId != null and chartDatasetId != ''">chart_dataset_id = #{chartDatasetId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaChartDatacolumnById" parameterType="String">
+        delete from rva_chart_datacolumn where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaChartDatacolumnByIds" parameterType="String">
+        delete from rva_chart_datacolumn where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

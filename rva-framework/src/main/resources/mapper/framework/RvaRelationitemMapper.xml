@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaRelationitemMapper">
+    
+    <resultMap type="RvaRelationitem" id="RvaRelationitemResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="relationId"    column="relation_id"    />
+        <result property="propId"    column="prop_id"    />
+        <result property="relatedName"    column="related_name"    />
+        <result property="relatedObjId"    column="related_obj_id"    />
+        <result property="relatedPropId"    column="related_prop_id"    />
+        <result property="relationPropId"    column="relation_prop_id"    />
+        <result property="relationInversePropId"    column="relation_inverse_prop_id"    />
+        <result property="idx"    column="idx"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaRelationitemVo">
+        select id, name, relation_id, prop_id, related_name, related_obj_id, related_prop_id, relation_prop_id, relation_inverse_prop_id, idx, data from rva_relationitem
+    </sql>
+
+    <select id="selectRvaRelationitemList" parameterType="RvaRelationitem" resultMap="RvaRelationitemResult">
+        <include refid="selectRvaRelationitemVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="relationId != null  and relationId != ''"> and relation_id = #{relationId}</if>
+            <if test="propId != null  and propId != ''"> and prop_id = #{propId}</if>
+            <if test="relatedName != null  and relatedName != ''"> and related_name like concat('%', #{relatedName}, '%')</if>
+            <if test="relatedObjId != null  and relatedObjId != ''"> and related_obj_id = #{relatedObjId}</if>
+            <if test="relatedPropId != null  and relatedPropId != ''"> and related_prop_id = #{relatedPropId}</if>
+            <if test="relationPropId != null  and relationPropId != ''"> and relation_prop_id = #{relationPropId}</if>
+            <if test="relationInversePropId != null  and relationInversePropId != ''"> and relation_inverse_prop_id = #{relationInversePropId}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaRelationitemById" parameterType="String" resultMap="RvaRelationitemResult">
+        <include refid="selectRvaRelationitemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaRelationitem" parameterType="RvaRelationitem">
+        insert into rva_relationitem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="relationId != null">relation_id,</if>
+            <if test="propId != null">prop_id,</if>
+            <if test="relatedName != null">related_name,</if>
+            <if test="relatedObjId != null">related_obj_id,</if>
+            <if test="relatedPropId != null">related_prop_id,</if>
+            <if test="relationPropId != null">relation_prop_id,</if>
+            <if test="relationInversePropId != null">relation_inverse_prop_id,</if>
+            <if test="idx != null">idx,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="relationId != null">#{relationId},</if>
+            <if test="propId != null">#{propId},</if>
+            <if test="relatedName != null">#{relatedName},</if>
+            <if test="relatedObjId != null">#{relatedObjId},</if>
+            <if test="relatedPropId != null">#{relatedPropId},</if>
+            <if test="relationPropId != null">#{relationPropId},</if>
+            <if test="relationInversePropId != null">#{relationInversePropId},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaRelationitem" parameterType="RvaRelationitem">
+        update rva_relationitem
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="relationId != null">relation_id = #{relationId},</if>
+            <if test="propId != null">prop_id = #{propId},</if>
+            <if test="relatedName != null">related_name = #{relatedName},</if>
+            <if test="relatedObjId != null">related_obj_id = #{relatedObjId},</if>
+            <if test="relatedPropId != null">related_prop_id = #{relatedPropId},</if>
+            <if test="relationPropId != null">relation_prop_id = #{relationPropId},</if>
+            <if test="relationInversePropId != null">relation_inverse_prop_id = #{relationInversePropId},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaRelationitemById" parameterType="String">
+        delete from rva_relationitem where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaRelationitemByIds" parameterType="String">
+        delete from rva_relationitem where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

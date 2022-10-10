@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.fe.mapper.RvaUniappRolePermissionMapper">
+    
+    <resultMap type="RvaUniappRolePermission" id="RvaUniappRolePermissionResult">
+        <result property="permissionId"    column="permission_id"    />
+        <result property="uniappId"    column="uniapp_id"    />
+        <result property="roleId"    column="role_id"    />
+    </resultMap>
+
+    <sql id="selectRvaUniappRolePermissionVo">
+        select permission_id, uniapp_id, role_id from rva_uniapp_role_permission
+    </sql>
+
+    <select id="selectRvaUniappRolePermissionList" parameterType="RvaUniappRolePermission" resultMap="RvaUniappRolePermissionResult">
+        <include refid="selectRvaUniappRolePermissionVo"/>
+        <where>  
+            <if test="permissionId != null  and permissionId != ''"> and permission_id = #{permissionId}</if>
+            <if test="uniappId != null  and uniappId != ''"> and uniapp_id = #{uniappId}</if>
+            <if test="roleId != null "> and role_id = #{roleId}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaUniappRolePermissionByPermissionId" parameterType="String" resultMap="RvaUniappRolePermissionResult">
+        <include refid="selectRvaUniappRolePermissionVo"/>
+        where permission_id = #{permissionId}
+    </select>
+        
+    <insert id="insertRvaUniappRolePermission" parameterType="RvaUniappRolePermission">
+        insert into rva_uniapp_role_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="permissionId != null and permissionId != ''">permission_id,</if>
+            <if test="uniappId != null and uniappId != ''">uniapp_id,</if>
+            <if test="roleId != null">role_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="permissionId != null and permissionId != ''">#{permissionId},</if>
+            <if test="uniappId != null and uniappId != ''">#{uniappId},</if>
+            <if test="roleId != null">#{roleId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaUniappRolePermission" parameterType="RvaUniappRolePermission">
+        update rva_uniapp_role_permission
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uniappId != null and uniappId != ''">uniapp_id = #{uniappId},</if>
+            <if test="roleId != null">role_id = #{roleId},</if>
+        </trim>
+        where permission_id = #{permissionId}
+    </update>
+
+    <delete id="deleteRvaUniappRolePermissionByPermissionId" parameterType="String">
+        delete from rva_uniapp_role_permission where permission_id = #{permissionId}
+    </delete>
+
+    <delete id="deleteRvaUniappRolePermissionByPermissionIds" parameterType="String">
+        delete from rva_uniapp_role_permission where permission_id in 
+        <foreach item="permissionId" collection="array" open="(" separator="," close=")">
+            #{permissionId}
+        </foreach>
+    </delete>
+</mapper>

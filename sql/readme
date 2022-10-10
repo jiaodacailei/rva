@@ -1,0 +1,40 @@
+0.初始化数据时，顺序执行如下脚本即可：
+
+0.1.初始化若依库
+ry/quartz.sql          --- 若依定时任务
+ry/ry_20210908.sql     --- 若依基础库
+
+0.2.初始化rva库
+rva/rva.schema.sql      --- rva表结构
+rva/rva.meta.sql        --- 放置所有rva元数据
+rva/rva.activiti.sql    --- 工作流数据
+rva/rva.view.sql        --- 视图
+rva/rva.sp.sql          --- 函数和存储过程，主要用于导出sql语句
+
+0.3.初始化xxx库
+xxx/xxx.alter.sql       --- 调整rva/sys数据，包括表结构、自增长开始值、数据等，可以拷贝app.alter.sql然后修改即可
+xxx/xxx.schema.sql      --- 应用表结构
+xxx/xxx.meta.sql        --- 放置所有应用元数据
+xxx/xxx.meta.sys.sql    --- 放置模块cigarette修改的sys元数据，例如：crud2_sys_dept, crud1_sys_user等
+xxx/xxx.data.sql        --- 放置所有应用数据
+
+xxx为应用模块名称，可自行修改
+
+1.项目自动部署时
+deploy.sql          --- 部署应用指定数据库脚本，全库
+
+2.rva元数据可以通过执行以下sql获取
+
+TRUNCATE TABLE rva_inserts;
+call rvaExportSql('sys');
+call rvaExportSql('rva');
+SELECT * FROM rva_inserts;
+
+应用模块xxx的元数据导出：
+TRUNCATE TABLE rva_inserts;
+call rvaExportSql('xxx');
+SELECT * FROM rva_inserts;
+
+3.当前全库脚本
+ry-vue.sql
+

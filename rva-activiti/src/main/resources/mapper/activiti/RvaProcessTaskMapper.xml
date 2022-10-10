@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.activiti.mapper.RvaProcessTaskMapper">
+    
+    <resultMap type="RvaProcessTask" id="RvaProcessTaskResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="key"    column="key"    />
+        <result property="decision"    column="decision"    />
+        <result property="refuseEnd"    column="refuse_end"    />
+        <result property="processId"    column="process_id"    />
+        <result property="idx"    column="idx"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaProcessTaskVo">
+        select id, name, `key`, decision, refuse_end, process_id, idx, create_by, create_time, update_by, update_time, data from rva_process_task
+    </sql>
+
+    <select id="selectRvaProcessTaskList" parameterType="RvaProcessTask" resultMap="RvaProcessTaskResult">
+        <include refid="selectRvaProcessTaskVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="key != null  and key != ''"> and `key` = #{key}</if>
+            <if test="decision != null  and decision != ''"> and decision = #{decision}</if>
+            <if test="refuseEnd != null  and refuseEnd != ''"> and refuse_end = #{refuseEnd}</if>
+            <if test="processId != null  and processId != ''"> and process_id = #{processId}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaProcessTaskById" parameterType="String" resultMap="RvaProcessTaskResult">
+        <include refid="selectRvaProcessTaskVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaProcessTask" parameterType="RvaProcessTask">
+        insert into rva_process_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="key != null">`key`,</if>
+            <if test="decision != null">decision,</if>
+            <if test="refuseEnd != null">refuse_end,</if>
+            <if test="processId != null">process_id,</if>
+            <if test="idx != null">idx,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="key != null">#{key},</if>
+            <if test="decision != null">#{decision},</if>
+            <if test="refuseEnd != null">#{refuseEnd},</if>
+            <if test="processId != null">#{processId},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaProcessTask" parameterType="RvaProcessTask">
+        update rva_process_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="key != null">`key` = #{key},</if>
+            <if test="decision != null">decision = #{decision},</if>
+            <if test="refuseEnd != null">refuse_end = #{refuseEnd},</if>
+            <if test="processId != null">process_id = #{processId},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaProcessTaskById" parameterType="String">
+        delete from rva_process_task where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaProcessTaskByIds" parameterType="String">
+        delete from rva_process_task where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

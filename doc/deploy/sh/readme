@@ -1,0 +1,40 @@
+一键部署命令
+nohup sh init.sh &
+
+config.sh               ------运行参数配置
+deploy_init.sh          ------将脚本运行日志打印在文件里
+git.sh                  ------拉取源码
+hander_config.sh        ------更换配置
+package.sh              ------打包
+init_mysql.sh           ------生成数据库
+start.sh                ------启动服务（java/nginx）
+
+备份
+backup_prepare.sh       ------备份前准备-1.初始化gitee文件备份gitee仓库，2-生成sql文件脚本
+batch_back_sql.sh       ------批量执行sql备份脚本
+gitpush.sh              ------多个项目同步文件到一个文件备份gitee仓库
+sqlbackup.sh            ------sql 备份模板
+cron.sh                 ------创建定时任务（批量上传文件到指定文件备份gitee仓库/定时）
+
+
+注意unaipp nginx 接口代理手动管理
+手动执行
+sh cron.sh
+
+
+
+查看服务日志
+journalctl -u score2
+
+实时日志查看
+journalctl -f
+
+查看运行状态
+systemctl status score2.service
+
+
+1.查看启动日志 journalctl -f或者 journalctl -xe
+2.设置开机自启动 systemctl enable score2.service
+3.启动score2服务 systemctl start score2.service
+4.停止开机自启动 systemctl disable score2.service
+
