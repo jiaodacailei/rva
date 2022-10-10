@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaTriggeractionMapper">
+    
+    <resultMap type="RvaTriggeraction" id="RvaTriggeractionResult">
+        <result property="id"    column="id"    />
+        <result property="actionSubject"    column="action_subject"    />
+        <result property="action"    column="action"    />
+        <result property="actionParams"    column="action_params"    />
+        <result property="data"    column="data"    />
+        <result property="idx"    column="idx"    />
+        <result property="triggerId"    column="trigger_id"    />
+    </resultMap>
+
+    <sql id="selectRvaTriggeractionVo">
+        select id, action_subject, action, action_params, data, idx, trigger_id from rva_triggeraction
+    </sql>
+
+    <select id="selectRvaTriggeractionList" parameterType="RvaTriggeraction" resultMap="RvaTriggeractionResult">
+        <include refid="selectRvaTriggeractionVo"/>
+        <where>  
+            <if test="actionSubject != null  and actionSubject != ''"> and action_subject = #{actionSubject}</if>
+            <if test="action != null  and action != ''"> and action = #{action}</if>
+            <if test="actionParams != null  and actionParams != ''"> and action_params = #{actionParams}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="triggerId != null  and triggerId != ''"> and trigger_id = #{triggerId}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaTriggeractionById" parameterType="String" resultMap="RvaTriggeractionResult">
+        <include refid="selectRvaTriggeractionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaTriggeraction" parameterType="RvaTriggeraction">
+        insert into rva_triggeraction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="actionSubject != null and actionSubject != ''">action_subject,</if>
+            <if test="action != null and action != ''">action,</if>
+            <if test="actionParams != null">action_params,</if>
+            <if test="data != null">data,</if>
+            <if test="idx != null">idx,</if>
+            <if test="triggerId != null and triggerId != ''">trigger_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="actionSubject != null and actionSubject != ''">#{actionSubject},</if>
+            <if test="action != null and action != ''">#{action},</if>
+            <if test="actionParams != null">#{actionParams},</if>
+            <if test="data != null">#{data},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="triggerId != null and triggerId != ''">#{triggerId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaTriggeraction" parameterType="RvaTriggeraction">
+        update rva_triggeraction
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="actionSubject != null and actionSubject != ''">action_subject = #{actionSubject},</if>
+            <if test="action != null and action != ''">action = #{action},</if>
+            <if test="actionParams != null">action_params = #{actionParams},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="triggerId != null and triggerId != ''">trigger_id = #{triggerId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaTriggeractionById" parameterType="String">
+        delete from rva_triggeraction where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaTriggeractionByIds" parameterType="String">
+        delete from rva_triggeraction where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

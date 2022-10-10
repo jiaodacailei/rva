@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaAppMapper">
+    
+    <resultMap type="RvaApp" id="RvaAppResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="idx"    column="idx"    />
+        <result property="objId"    column="obj_id"    />
+        <result property="template"    column="template"    />
+        <result property="listTemplate"    column="list_template"    />
+        <result property="status"    column="status"    />
+        <result property="views"    column="views"    />
+        <result property="apps"    column="apps"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaAppVo">
+        select id, name, type, idx, obj_id, template, list_template, status, views, apps, data from rva_app
+    </sql>
+
+    <select id="selectRvaAppList" parameterType="RvaApp" resultMap="RvaAppResult">
+        <include refid="selectRvaAppVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+            <if test="template != null  and template != ''"> and template = #{template}</if>
+            <if test="listTemplate != null  and listTemplate != ''"> and list_template = #{listTemplate}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="views != null  and views != ''"> and views = #{views}</if>
+            <if test="apps != null  and apps != ''"> and apps = #{apps}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaAppById" parameterType="String" resultMap="RvaAppResult">
+        <include refid="selectRvaAppVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaApp" parameterType="RvaApp">
+        insert into rva_app
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="idx != null">idx,</if>
+            <if test="objId != null and objId != ''">obj_id,</if>
+            <if test="template != null">template,</if>
+            <if test="listTemplate != null">list_template,</if>
+            <if test="status != null">status,</if>
+            <if test="views != null">views,</if>
+            <if test="apps != null">apps,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="objId != null and objId != ''">#{objId},</if>
+            <if test="template != null">#{template},</if>
+            <if test="listTemplate != null">#{listTemplate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="views != null">#{views},</if>
+            <if test="apps != null">#{apps},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaApp" parameterType="RvaApp">
+        update rva_app
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="objId != null and objId != ''">obj_id = #{objId},</if>
+            <if test="template != null">template = #{template},</if>
+            <if test="listTemplate != null">list_template = #{listTemplate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="views != null">views = #{views},</if>
+            <if test="apps != null">apps = #{apps},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaAppById" parameterType="String">
+        delete from rva_app where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaAppByIds" parameterType="String">
+        delete from rva_app where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getUsage" resultType="com.ruoyi.rva.framework.domain.RvaMap">
+        select obj_id into @objId from rva_app where id = #{appId};
+        select form_related_crud as app, 'viewproperty' as usageType from rva_viewproperty
+        where form_related_crud like concat('crud%_', @objId) or form_related_crud like concat('crud%_', @objId, ',%') or form_related_crud like concat('%,crud%_', @objId, ',%')
+        union ALL
+        select action_dialog_app_id as app, 'viewbutton' as usageType from rva_viewbutton where action_dialog_app_id like concat('crud%_', @objId)
+        union ALL
+        select path as app, 'menu' as usageType from sys_menu where path like concat('crud%_', @objId)
+        union ALL
+        select related_app_id as app, 'appitem' as usageType from rva_appitem
+        where related_app_type = 'crud' and (related_app_id like concat('crud%_', @objId) or related_app_id like concat('crud%_', @objId, ',%') or related_app_id like concat('%,crud%_', @objId, ',%'))
+    </select>
+
+    <select id="getObjectAppIds" resultType="String">
+        select obj_id into @objId from rva_app where id = #{appId};
+        select id from rva_app where obj_id = @objId
+    </select>
+</mapper>

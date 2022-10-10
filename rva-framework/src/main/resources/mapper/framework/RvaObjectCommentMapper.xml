@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaObjectCommentMapper">
+    
+    <resultMap type="RvaObjectComment" id="RvaObjectCommentResult">
+        <result property="id"    column="id"    />
+        <result property="objId"    column="obj_id"    />
+        <result property="objIdValue"    column="obj_id_value"    />
+        <result property="userId"    column="user_id"    />
+        <result property="commentType"    column="comment_type"    />
+        <result property="commentContent"    column="comment_content"    />
+        <result property="commentImage"    column="comment_image"    />
+        <result property="replyUserId"    column="reply_user_id"    />
+        <result property="replyCommentId"    column="reply_comment_id"    />
+        <result property="commentIp"    column="comment_ip"    />
+        <result property="likeCount"    column="like_count"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRvaObjectCommentVo">
+        select id, obj_id, obj_id_value, user_id, comment_type, comment_content, comment_image, reply_user_id, reply_comment_id, comment_ip, like_count, create_time, update_time from rva_object_comment
+    </sql>
+
+    <select id="selectRvaObjectCommentList" parameterType="RvaObjectComment" resultMap="RvaObjectCommentResult">
+        <include refid="selectRvaObjectCommentVo"/>
+        <where>  
+            <if test="objId != null  and objId != ''"> and obj_id = #{objId}</if>
+            <if test="objIdValue != null  and objIdValue != ''"> and obj_id_value = #{objIdValue}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="commentType != null "> and comment_type = #{commentType}</if>
+            <if test="commentContent != null  and commentContent != ''"> and comment_content = #{commentContent}</if>
+            <if test="commentImage != null  and commentImage != ''"> and comment_image = #{commentImage}</if>
+            <if test="replyUserId != null "> and reply_user_id = #{replyUserId}</if>
+            <if test="replyCommentId != null "> and reply_comment_id = #{replyCommentId}</if>
+            <if test="commentIp != null  and commentIp != ''"> and comment_ip = #{commentIp}</if>
+            <if test="likeCount != null "> and like_count = #{likeCount}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaObjectCommentById" parameterType="Long" resultMap="RvaObjectCommentResult">
+        <include refid="selectRvaObjectCommentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaObjectComment" parameterType="RvaObjectComment" useGeneratedKeys="true" keyProperty="id">
+        insert into rva_object_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="objId != null">obj_id,</if>
+            <if test="objIdValue != null">obj_id_value,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="commentType != null">comment_type,</if>
+            <if test="commentContent != null">comment_content,</if>
+            <if test="commentImage != null">comment_image,</if>
+            <if test="replyUserId != null">reply_user_id,</if>
+            <if test="replyCommentId != null">reply_comment_id,</if>
+            <if test="commentIp != null">comment_ip,</if>
+            <if test="likeCount != null">like_count,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="objId != null">#{objId},</if>
+            <if test="objIdValue != null">#{objIdValue},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="commentType != null">#{commentType},</if>
+            <if test="commentContent != null">#{commentContent},</if>
+            <if test="commentImage != null">#{commentImage},</if>
+            <if test="replyUserId != null">#{replyUserId},</if>
+            <if test="replyCommentId != null">#{replyCommentId},</if>
+            <if test="commentIp != null">#{commentIp},</if>
+            <if test="likeCount != null">#{likeCount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaObjectComment" parameterType="RvaObjectComment">
+        update rva_object_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="objId != null">obj_id = #{objId},</if>
+            <if test="objIdValue != null">obj_id_value = #{objIdValue},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="commentType != null">comment_type = #{commentType},</if>
+            <if test="commentContent != null">comment_content = #{commentContent},</if>
+            <if test="commentImage != null">comment_image = #{commentImage},</if>
+            <if test="replyUserId != null">reply_user_id = #{replyUserId},</if>
+            <if test="replyCommentId != null">reply_comment_id = #{replyCommentId},</if>
+            <if test="commentIp != null">comment_ip = #{commentIp},</if>
+            <if test="likeCount != null">like_count = #{likeCount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaObjectCommentById" parameterType="Long">
+        delete from rva_object_comment where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaObjectCommentByIds" parameterType="String">
+        delete from rva_object_comment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

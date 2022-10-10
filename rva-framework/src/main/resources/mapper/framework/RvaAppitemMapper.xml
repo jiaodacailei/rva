@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaAppitemMapper">
+    
+    <resultMap type="RvaAppitem" id="RvaAppitemResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="idx"    column="idx"    />
+        <result property="relatedAppType"    column="related_app_type"    />
+        <result property="relatedAppId"    column="related_app_id"    />
+        <result property="showIf"    column="show_if"    />
+        <result property="type"    column="type"    />
+        <result property="subType"    column="sub_type"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="appId"    column="app_id"    />
+        <result property="data"    column="data"    />
+    </resultMap>
+
+    <sql id="selectRvaAppitemVo">
+        select id, name, idx, related_app_type, related_app_id, show_if, type, sub_type, parent_id, app_id, data from rva_appitem
+    </sql>
+
+    <select id="selectRvaAppitemList" parameterType="RvaAppitem" resultMap="RvaAppitemResult">
+        <include refid="selectRvaAppitemVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="idx != null "> and idx = #{idx}</if>
+            <if test="relatedAppType != null  and relatedAppType != ''"> and related_app_type = #{relatedAppType}</if>
+            <if test="relatedAppId != null  and relatedAppId != ''"> and related_app_id = #{relatedAppId}</if>
+            <if test="showIf != null  and showIf != ''"> and show_if = #{showIf}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="subType != null  and subType != ''"> and sub_type = #{subType}</if>
+            <if test="parentId != null  and parentId != ''"> and parent_id = #{parentId}</if>
+            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
+            <if test="data != null  and data != ''"> and data = #{data}</if>
+        </where>
+    </select>
+    
+    <select id="selectRvaAppitemById" parameterType="String" resultMap="RvaAppitemResult">
+        <include refid="selectRvaAppitemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRvaAppitem" parameterType="RvaAppitem">
+        insert into rva_appitem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="idx != null">idx,</if>
+            <if test="relatedAppType != null">related_app_type,</if>
+            <if test="relatedAppId != null and relatedAppId != ''">related_app_id,</if>
+            <if test="showIf != null">show_if,</if>
+            <if test="type != null">type,</if>
+            <if test="subType != null">sub_type,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="appId != null and appId != ''">app_id,</if>
+            <if test="data != null">data,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="idx != null">#{idx},</if>
+            <if test="relatedAppType != null">#{relatedAppType},</if>
+            <if test="relatedAppId != null and relatedAppId != ''">#{relatedAppId},</if>
+            <if test="showIf != null">#{showIf},</if>
+            <if test="type != null">#{type},</if>
+            <if test="subType != null">#{subType},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="appId != null and appId != ''">#{appId},</if>
+            <if test="data != null">#{data},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaAppitem" parameterType="RvaAppitem">
+        update rva_appitem
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="idx != null">idx = #{idx},</if>
+            <if test="relatedAppType != null">related_app_type = #{relatedAppType},</if>
+            <if test="relatedAppId != null and relatedAppId != ''">related_app_id = #{relatedAppId},</if>
+            <if test="showIf != null">show_if = #{showIf},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="subType != null">sub_type = #{subType},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="appId != null and appId != ''">app_id = #{appId},</if>
+            <if test="data != null">data = #{data},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaAppitemById" parameterType="String">
+        delete from rva_appitem where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaAppitemByIds" parameterType="String">
+        delete from rva_appitem where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

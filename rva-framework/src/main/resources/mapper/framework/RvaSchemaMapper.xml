@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.framework.mapper.RvaSchemaMapper">
+
+    <select id="queryAllTables" resultType="java.util.Map">
+        select LOWER(TABLE_NAME) as tablename,TABLE_COMMENT as comment, LOWER(TABLE_SCHEMA) as schemaname
+        from information_schema.TABLES where TABLE_SCHEMA = database()
+    </select>
+
+    <select id="queryTableComment" resultType="java.lang.String">
+        select TABLE_COMMENT from information_schema.TABLES where TABLE_NAME = #{table} and TABLE_SCHEMA = database()
+    </select>
+
+    <select id="queryTableCount" resultType="java.lang.Integer">
+        select count(*) from information_schema.TABLES where TABLE_NAME = #{table} and TABLE_SCHEMA = database()
+    </select>
+
+    <resultMap type="com.ruoyi.rva.framework.domain.MySqlColumn" id="MySqlColumnResult">
+        <result property="field"    column="Field"    />
+        <result property="type"    column="Type"    />
+        <result property="comment"    column="Comment"    />
+        <result property="allowsNull"    column="Null"    />
+        <result property="key"    column="Key"    />
+        <result property="defaultValue"    column="Default"    />
+        <result property="extra"    column="Extra"    />
+    </resultMap>
+
+    <select id="queryColumns" resultMap="MySqlColumnResult">
+        show full columns from ${tableName}
+    </select>
+
+    <update id="execute">
+        ${sql}
+    </update>
+</mapper>

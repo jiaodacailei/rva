@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rva.fe.mapper.RvaUniappPushMapper">
+
+    <resultMap type="RvaUniappPush" id="RvaUniappPushResult">
+        <result property="id"    column="id"    />
+        <result property="cid"    column="cid"    />
+        <result property="uniappId"    column="uniapp_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="devicePlatform"    column="device_platform"    />
+        <result property="deviceBrand"    column="device_brand"    />
+        <result property="deviceSystem"    column="device_system"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="token"    column="token"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="pushChannel"    column="push_channel"    />
+    </resultMap>
+
+    <sql id="selectRvaUniappPushVo">
+        select id, cid, uniapp_id, user_id, device_platform, device_brand, device_system, tenant_id, token, update_time,push_channel from rva_uniapp_push
+    </sql>
+
+    <select id="selectRvaUniappPushList" parameterType="RvaUniappPush" resultMap="RvaUniappPushResult">
+        <include refid="selectRvaUniappPushVo"/>
+        <where>
+            <if test="cid != null  and cid != ''"> and cid = #{cid}</if>
+            <if test="uniappId != null  and uniappId != ''"> and uniapp_id = #{uniappId}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="devicePlatform != null  and devicePlatform != ''"> and device_platform = #{devicePlatform}</if>
+            <if test="deviceBrand != null  and deviceBrand != ''"> and device_brand = #{deviceBrand}</if>
+            <if test="deviceSystem != null  and deviceSystem != ''"> and device_system = #{deviceSystem}</if>
+            <if test="tenantId != null  and tenantId != ''"> and tenant_id = #{tenantId}</if>
+            <if test="token != null  and token != ''"> and token = #{token}</if>
+            <if test="pushChannel != null  and pushChannel != ''"> and push_channel = #{pushChannel}</if>
+        </where>
+    </select>
+
+    <select id="selectRvaUniappPushById" parameterType="Long" resultMap="RvaUniappPushResult">
+        <include refid="selectRvaUniappPushVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRvaUniappPush" parameterType="RvaUniappPush" useGeneratedKeys="true" keyProperty="id">
+        insert into rva_uniapp_push
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cid != null and cid != ''">cid,</if>
+            <if test="uniappId != null">uniapp_id,</if>
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="devicePlatform != null">device_platform,</if>
+            <if test="deviceBrand != null">device_brand,</if>
+            <if test="deviceSystem != null">device_system,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="token != null">token,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="pushChannel != null">push_channel,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cid != null and cid != ''">#{cid},</if>
+            <if test="uniappId != null">#{uniappId},</if>
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="devicePlatform != null">#{devicePlatform},</if>
+            <if test="deviceBrand != null">#{deviceBrand},</if>
+            <if test="deviceSystem != null">#{deviceSystem},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="token != null">#{token},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="pushChannel != null">#{pushChannel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRvaUniappPush" parameterType="RvaUniappPush">
+        update rva_uniapp_push
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cid != null and cid != ''">cid = #{cid},</if>
+            <if test="uniappId != null">uniapp_id = #{uniappId},</if>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="devicePlatform != null">device_platform = #{devicePlatform},</if>
+            <if test="deviceBrand != null">device_brand = #{deviceBrand},</if>
+            <if test="deviceSystem != null">device_system = #{deviceSystem},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="token != null">token = #{token},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="pushChannel != null">push_channel = #{pushChannel},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRvaUniappPushById" parameterType="Long">
+        delete from rva_uniapp_push where id = #{id}
+    </delete>
+
+    <delete id="deleteRvaUniappPushByIds" parameterType="String">
+        delete from rva_uniapp_push where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

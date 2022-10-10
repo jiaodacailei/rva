@@ -1,0 +1,254 @@
+    用户对“${app.name}”的基本信息进行管理，包括：
+#foreach($prop in $app.updateView.properties)
+    - $docService.getViewpropertyDoc($prop)
+#end
+    设计功能点包括：#foreach($btn in $app.listView.buttons)#if(${btn.name} == '删除' and $btn.position == 'top')批量#end${btn.name}“${app.name}”、#end 查询“${app.name}”、设置“${app.name}”列表排序方式、设置“${app.name}”列表分页行数以及选择“${app.name}”列表分页
+    其中，选择“${app.name}”列表分页功能包括：
+    选择“${app.name}”列表第一页；
+    选择“${app.name}”列表最后一页；
+    选择“${app.name}”列表上一页；
+    选择“${app.name}”列表下一页；
+    选择“${app.name}”列表某一页。
+
+    用例图如图XXX所示，各功能点详细功能如下：
+
+    图XXX  “${app.name}”管理用例图
+#set($usecases = 0)
+#foreach($btn in $app.listView.buttons)
+#set($actionApp = $docService.getApp($btn.actionDialogAppId))
+#set($v = $docService.getView($btn.actionDialogViewId))
+#set($usecases = $velocityCount)
+#set($operation = ${btn.name})
+#if(${btn.name} == '删除' and $btn.position == 'top')
+#set($operation = "批量" + ${btn.name})
+#end
+
+    $velocityCount）${operation}“${app.name}”
+    用户可以${operation}“${app.name}”
+
+    前置条件：
+    用户登录系统成功，具有相应权限
+
+    正常流程：
+#if($btn.position == "top")
+#if($btn.selectType == 'single')
+    用户选择一条“${app.name}”记录
+#elseif($btn.selectType == 'multiple')
+    用户选择一条或者多条“${app.name}”记录
+#end
+#elseif($btn.position == 'inner')
+    用户选择一条“${app.name}”记录
+#end
+    用户选择${operation}；
+#if($btn.type == 'js')
+    系统执行${btn.action}操作。
+#elseif($btn.type == 'ajax')
+#if($btn.confirmMessage != "")
+    系统提示：$btn.confirmMessage
+    用户选择确定后，方可执行操作
+#end
+#if($rvaUtils.isMatched("/rva/view/.*/move/up", $btn.actionUrl))
+    如果用户选中的是一条记录，则系统会将该记录上移一位；
+    如果用户选中的是多条记录，假设第一条记录为first，则系统会将除first记录之外的数据记录移到first记录之前，并提示用户操作成功！
+#elseif($rvaUtils.isMatched("/rva/view/.*/move/down", $btn.actionUrl))
+    如果用户选中的是一条记录，则系统会将该记录下移一位；
+    如果用户选中的是多条记录，假设最后一条记录为last，则系统会将除last记录之外的数据记录移到last记录之后，并提示用户操作成功！
+#elseif($rvaUtils.isMatched("/rva/view/.*/delete", $btn.actionUrl))
+    系统删除用户选中的“${app.name}”记录，并提示用户操作成功！
+
+    异常流程（未选择数据）：
+    如果用户未选择“${app.name}”记录，则系统应该提示用户，并阻止用户的操作！
+
+    异常流程（有关联数据）：
+    如果用户选择的“${app.name}”记录已经被其他数据关联，则应该提示用户，并阻止用户的操作！
+#else
+    系统执行${btn.actionUrl}；
+#end
+#elseif($btn.type == 'crud' || $btn.type == 'tcrud')
+#if($actionApp)
+    系统显示${actionApp.name}管理页面，详细操作步骤，请参考对应的详细功能描述；
+#else
+    系统显示${btn.actionDialogAppId}管理页面
+#end
+#elseif($btn.type == 'form')
+#if($v)
+    系统显示如下字段：
+    #foreach($p in $v.propertiesWithoutHidden)${p.name}#if($p.formReadonly == "Y")（只读）#end#if($velocityHasNext)，#end#end
+
+#if($rvaUtils.isMatched("/rva/view/.*/load/clone", $v.loadUrl))
+    上述字段的值，从选中的记录中读取
+#end
+    用户输入上述字段（非只读）内容后，可以选择如下操作：#foreach($b in $v.buttons)$b.name#if($velocityHasNext)，#end#end
+
+#foreach($b in $v.buttons)
+    如果用户选择${b.name}
+#if($b.type == 'js')
+    系统#if($b.action == 'resetView')重置当前表单，所有字段恢复到初始状态#elseif($b.action == 'closeView')取消当前操作，关闭当前表单#else 执行操作${b.action}#end
+
+#elseif($b.type == 'ajax')
+#set($hiddens = $docService.getHiddensWithoutPK($v))
+#if($rvaUtils.isMatched("/rva/view/.*/submit/create", $b.actionUrl))
+#if($hiddens.size() > 0)
+    系统自动增加如下信息数据：
+    #foreach($p in $hiddens)${p.name}#if($velocityHasNext)，#end#end
+
+#end
+    系统新增“${app.name}”的基本信息到数据库后，提示用户操作成功！
+#elseif($rvaUtils.isMatched("/rva/view/.*/submit/update", $b.actionUrl))
+#if($hiddens.size() > 0)
+    系统自动增加如下信息数据：
+    #foreach($p in $hiddens)${p.name}#if($velocityHasNext)，#end#end
+
+#end
+    系统修改“${app.name}”的基本信息到数据库后，提示用户操作成功！
+#else
+    系统执行${b.actionUrl}；
+#end
+#end
+#end
+#else
+    系统显示${btn.actionDialogViewId}表单
+#end
+#end
+
+#if($v && $v.propertiesRequired.size() > 0)
+
+    异常流程(必填异常)：
+    用户提交表单时，如果如下字段未输入：
+    #foreach($p in $v.propertiesRequired)#if(${p.name} != "ID")${p.name}#if($velocityHasNext)，#end#end#end
+
+    系统中断用户提交，并提示用户填写！
+#end
+
+#if($v && $v.propertiesText.size() > 0)
+    异常流程(文本输入越界)：
+    用户提交表单时，如果如下字段文本框中输入的字符数量越界：
+    #foreach($p in $v.propertiesText)${p.name}#if($velocityHasNext)，#end#end
+
+    系统阻止用户输入，并提示用户！
+#end
+#if($v)
+#foreach($p in $v.properties)
+#if($p.dictDataList.size() > 0)
+    异常流程(${p.name}选项不在预定范围)：
+    用户输入${p.name}选项时，不在如下范围内：#foreach($dict in $p.dictDataList)$dict.dictLabel#if($velocityHasNext)，#end#end
+    系统阻止用户输入，并提示用户！
+#end
+#end
+#end
+#end
+
+#set($usecases = $usecases + 1)
+    $usecases）查询“${app.name}”列表
+    用户可以查询“${app.name}”列表
+
+    前置条件：
+    用户登录系统成功，具有相应权限
+
+    正常流程：
+    用户输入#foreach($p in $app.searchView.properties)${p.name}#if($velocityHasNext)、#end#end 等信息进行查询；
+    系统显示符合条件的“${app.name}”信息：
+    #foreach($p in $app.listView.properties)${p.name}#if($velocityHasNext)，#end#end
+
+
+    异常流程：
+    如果没有符合条件的“${app.name}”信息，则提示用户！
+
+#set($usecases = $usecases + 1)
+    $usecases）设置“${app.name}”列表排序方式
+    用户可以设置“${app.name}”列表排序方式，排序字段为：
+#foreach($p in $app.listView.orderByProperties)
+    ${p.name}(默认#if(${p.listOrderType} == "ASC")：顺序#else：逆序#end)
+#end
+
+    前置条件：
+    用户登录系统成功，具有相应权限；
+    “${app.name}”列表已经显示。
+
+    正常流程：
+    用户设置列表排序字段的排序方式为逆序或者顺序；
+    系统按照用户的设置，对列表数据进行重新排序。
+
+#set($usecases = $usecases + 1)
+    $usecases）设置“${app.name}”列表分页行数
+    用户可以设置“${app.name}”列表分页行数：10、12、20、30、50等
+
+    前置条件：
+    用户登录系统成功，具有相应权限；
+    “${app.name}”列表已经显示。
+
+    正常流程：
+    用户设置“${app.name}”列表分页行数；
+    系统按照用户的设置，对“${app.name}”列表数据重新分页展示。
+
+#set($usecases = $usecases + 1)
+    $usecases）选择“${app.name}”列表分页
+    $usecases.1）选择“${app.name}”列表第一页
+    用户选择“${app.name}”列表第一页
+
+    前置条件：
+    用户登录系统成功，具有相应权限；
+    “${app.name}”列表已经显示。
+
+    正常流程：
+    用户选择“${app.name}”列表第一页；
+    系统显示“${app.name}”列表第一页数据以及当前页号和总页数。
+
+    异常流程：
+    如果“${app.name}”列表当前已经是第一页，则系统应该忽略用户请求！
+
+    $usecases.2）选择“${app.name}”列表最后一页
+    用户选择“${app.name}”列表最后一页
+
+    前置条件：
+    用户登录系统成功，具有相应权限；
+    “${app.name}”列表已经显示。
+
+    正常流程：
+    用户选择“${app.name}”列表最后一页；
+    系统显示“${app.name}”列表最后一页数据以及当前页号和总页数。
+
+    异常流程：
+    如果“${app.name}”列表当前已经是最后一页，则系统应该忽略用户请求！
+
+    $usecases.3）选择“${app.name}”列表上一页
+    用户选择“${app.name}”列表上一页
+
+    前置条件：
+    用户登录系统成功，具有相应权限；
+    “${app.name}”列表已经显示。
+
+    正常流程：
+    用户选择“${app.name}”列表上一页；
+    系统显示“${app.name}”列表当前页面的上一页数据以及当前页号和总页数。
+
+    异常流程：
+    如果“${app.name}”列表当前已经是第一页，则系统应该阻止用户请求！
+
+    $usecases.4）选择“${app.name}”列表下一页
+    用户选择“${app.name}”列表下一页
+
+    前置条件：
+    用户登录系统成功，具有相应权限；
+    “${app.name}”列表已经显示。
+
+    正常流程：
+    用户选择“${app.name}”列表下一页；
+    系统显示“${app.name}”列表当前页面的下一页数据以及当前页号和总页数。
+
+    异常流程：
+    如果“${app.name}”列表当前已经是最后一页，则系统应该阻止用户请求！
+
+    $usecases.5）选择“${app.name}”列表某一页
+    用户选择“${app.name}”列表某一页
+
+    前置条件：
+    用户登录系统成功，具有相应权限；
+    “${app.name}”列表已经显示。
+
+    正常流程：
+    用户选择“${app.name}”列表某一页；
+    系统显示“${app.name}”列表某一页数据以及当前页号和总页数。
+
+    异常流程：
+    如果用户选择的某一页不在如下范围内，则系统应该阻止用户请求：[1, 列表最大页数]
