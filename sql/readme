@@ -15,7 +15,7 @@ rva/rva.sp.sql          --- 函数和存储过程，主要用于导出sql语句
 xxx/xxx.alter.sql       --- 调整rva/sys数据，包括表结构、自增长开始值、数据等，可以拷贝app.alter.sql然后修改即可
 xxx/xxx.schema.sql      --- 应用表结构
 xxx/xxx.meta.sql        --- 放置所有应用元数据
-xxx/xxx.meta.sys.sql    --- 放置模块cigarette修改的sys元数据，例如：crud2_sys_dept, crud1_sys_user等
+xxx/xxx.meta.sys.sql    --- 放置模块xxx修改的sys元数据，例如：crud2_sys_dept, crud1_sys_user等
 xxx/xxx.data.sql        --- 放置所有应用数据
 
 xxx为应用模块名称，可自行修改

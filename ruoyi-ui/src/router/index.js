@@ -250,7 +250,7 @@ export const constantRoutes = [
 ]
 
 export default new Router({
-  base: '/cigarette-admin',
+  base: '/rva-admin',
   mode: 'history', // 去掉url中的#
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes

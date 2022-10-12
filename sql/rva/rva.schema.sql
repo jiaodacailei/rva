@@ -1,14 +1,14 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 192.168.1.102(linux)
+ Source Server         : 127.0.0.1
  Source Server Type    : MySQL
- Source Server Version : 50736
- Source Host           : 192.168.1.102:3306
- Source Schema         : cigarette
+ Source Server Version : 50731
+ Source Host           : 127.0.0.1:3306
+ Source Schema         : rva
 
  Target Server Type    : MySQL
- Target Server Version : 50736
+ Target Server Version : 50731
  File Encoding         : 65001
 
  Date: 18/05/2022 18:23:33
