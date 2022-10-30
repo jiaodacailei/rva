@@ -12,6 +12,7 @@ import com.ruoyi.rva.framework.service.IRvaSystemService;
 import com.ruoyi.rva.framework.util.RvaUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -336,6 +337,11 @@ public class RvaApp extends BaseEntity {
     }
 
     private String getShareSearchIdByRvaAppitem(List<RvaAppitem> appItems) {
+        if (ObjectUtils.isEmpty(appItems)) {
+            return "";
+        }
+
+
         RvaAppitem firstItem = appItems.get(0);
         String relatedAppType = firstItem.getRelatedAppType();
         String relatedAppId = firstItem.getRelatedAppId();

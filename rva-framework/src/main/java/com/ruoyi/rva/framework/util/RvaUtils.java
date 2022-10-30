@@ -639,6 +639,10 @@ public class RvaUtils {
         return RvaJsonUtils.writeAsString(parseMap(data).rvaPut(property, val));
     }
 
+    public static void throwRuntimeException(String msg, Throwable ex, Object... args) {
+        throw new RuntimeException(String.format(msg, args), ex);
+    }
+    
     public static void throwRuntimeException(String msg, Object... args) {
         throw new RuntimeException(String.format(msg, args));
     }

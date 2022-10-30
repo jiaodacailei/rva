@@ -659,4 +659,8 @@ public class RvaObject extends RvaBaseEntity
         }
         return fieldValues.getString("id");
     }
+    
+    public Boolean hasPropDel () {
+        return RvaUtils.isNotEmpty(getPropNameDel ());
+    }
 }

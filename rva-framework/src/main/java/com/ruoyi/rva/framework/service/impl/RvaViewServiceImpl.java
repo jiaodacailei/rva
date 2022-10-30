@@ -1,30 +1,68 @@
 package com.ruoyi.rva.framework.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.ruoyi.common.core.domain.entity.SysRole;
-import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.rva.framework.domain.*;
-import com.ruoyi.rva.framework.extension.*;
-import com.ruoyi.rva.framework.mapper.*;
-import com.ruoyi.rva.framework.service.IRvaLogService;
-import com.ruoyi.rva.framework.service.IRvaSystemService;
-import com.ruoyi.rva.framework.service.IRvaViewService;
-import com.ruoyi.rva.framework.service.IRvaViewpropertyService;
-import com.ruoyi.rva.framework.util.*;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import static com.ruoyi.framework.aspectj.DataScopeAspect.DATA_SCOPE_ALL;
+import static com.ruoyi.framework.aspectj.DataScopeAspect.DATA_SCOPE_CUSTOM;
+import static com.ruoyi.framework.aspectj.DataScopeAspect.DATA_SCOPE_DEPT;
+import static com.ruoyi.framework.aspectj.DataScopeAspect.DATA_SCOPE_DEPT_AND_CHILD;
+import static com.ruoyi.framework.aspectj.DataScopeAspect.DATA_SCOPE_SELF;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.ibatis.annotations.Param;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.*;
+import com.github.pagehelper.PageHelper;
+import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.rva.framework.domain.RvaApp;
+import com.ruoyi.rva.framework.domain.RvaList;
+import com.ruoyi.rva.framework.domain.RvaMap;
+import com.ruoyi.rva.framework.domain.RvaObject;
+import com.ruoyi.rva.framework.domain.RvaProperty;
+import com.ruoyi.rva.framework.domain.RvaRelation;
+import com.ruoyi.rva.framework.domain.RvaRelationitem;
+import com.ruoyi.rva.framework.domain.RvaSQL;
+import com.ruoyi.rva.framework.domain.RvaTenant;
+import com.ruoyi.rva.framework.domain.RvaView;
+import com.ruoyi.rva.framework.domain.RvaViewbutton;
+import com.ruoyi.rva.framework.domain.RvaViewproperty;
+import com.ruoyi.rva.framework.extension.RvaDeleteInterceptor;
+import com.ruoyi.rva.framework.extension.RvaFormSubmitInterceptor;
+import com.ruoyi.rva.framework.extension.RvaListSQLInterceptor;
+import com.ruoyi.rva.framework.extension.RvaListValueFormatter;
+import com.ruoyi.rva.framework.extension.RvaPrinterInterceptor;
+import com.ruoyi.rva.framework.mapper.RvaAppMapper;
+import com.ruoyi.rva.framework.mapper.RvaDataMapper;
+import com.ruoyi.rva.framework.mapper.RvaObjectMapper;
+import com.ruoyi.rva.framework.mapper.RvaPropertyMapper;
+import com.ruoyi.rva.framework.mapper.RvaRelationMapper;
+import com.ruoyi.rva.framework.mapper.RvaViewMapper;
+import com.ruoyi.rva.framework.service.IRvaLogService;
+import com.ruoyi.rva.framework.service.IRvaSystemService;
+import com.ruoyi.rva.framework.service.IRvaViewService;
+import com.ruoyi.rva.framework.util.RvaConstants;
+import com.ruoyi.rva.framework.util.RvaExcelUtil;
+import com.ruoyi.rva.framework.util.RvaJsonUtils;
+import com.ruoyi.rva.framework.util.RvaUtils;
+import com.ruoyi.rva.framework.util.RvaVelocityUtils;
 
-import static com.ruoyi.framework.aspectj.DataScopeAspect.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 视图Service业务层处理
@@ -297,6 +335,10 @@ public class RvaViewServiceImpl implements IRvaViewService {
         // 处理tenant
         if (object.hasPropTenant()) {
             sql.whereEqOrLike(object.getNo(), object.getPropNameTenant(), getCurrentTenantId());
+        }
+        // 处理删除标记
+        if (object.hasPropDel()) {
+        	sql.whereEqOrLike(object.getNo(), object.getPropNameDel(), "0");
         }
         // 处理排序
         addOrderBys(req, object, list, sql);
@@ -1275,21 +1317,28 @@ public class RvaViewServiceImpl implements IRvaViewService {
             whereMap.put(object.getPropNameKey(), keyValue);
             bean.ifPresent(b -> {
                 if (b.preHandle(keyValue, selection, object, view, req)) {
-                    executeSubmitSql(new RvaMap(selection).rvaPutAll(req), view.getFormSubmitBeforeSql());
-                    rvaDataMapper.deleteWhereMap(object.getId(), whereMap);
-                    logService.deleteRvaLog(object.getId(), keyValue, view.getLogTable());
+                    delete(req, view, object, keyValue, selection, whereMap);
                 }
             });
             if (!bean.isPresent()) {
-                executeSubmitSql(new RvaMap(selection).rvaPutAll(req), view.getFormSubmitBeforeSql());
-                rvaDataMapper.deleteWhereMap(object.getId(), whereMap);
-                logService.deleteRvaLog(object.getId(), keyValue, view.getLogTable());
+                delete(req, view, object, keyValue, selection, whereMap);
             }
             // this.updateIndex (null, null, object, new RvaMap<>(selection));
             executeSubmitSql(new RvaMap(selection).rvaPutAll(req), view.getFormSubmitAfterSql());
             bean.ifPresent(b -> b.postHandle(keyValue, selection, object, view, req));
         }
     }
+
+	private void delete(RvaMap req, RvaView view, RvaObject object, String keyValue, Map selection,
+			Map<String, Object> whereMap) {
+		executeSubmitSql(new RvaMap(selection).rvaPutAll(req), view.getFormSubmitBeforeSql());
+		if (object.hasPropDel()) {
+			rvaDataMapper.updateWhereMap (object.getId(), new RvaMap<String, Object>(object.getPropNameDel(), "1"), whereMap, false);
+		} else {
+			rvaDataMapper.deleteWhereMap(object.getId(), whereMap);
+		}
+		logService.deleteRvaLog(object.getId(), keyValue, view.getLogTable());
+	}
 
     @Override
     public RvaMap selectFormsViewData(String createView, String updateView, RvaMap req) {

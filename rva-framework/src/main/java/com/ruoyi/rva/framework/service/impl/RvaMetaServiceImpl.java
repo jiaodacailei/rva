@@ -154,6 +154,10 @@ public class RvaMetaServiceImpl implements IRvaMetaService {
             if (property.match(Arrays.asList("排序", "idx", "sort"))) {
                 obj.setPropNameIndex(propertyName);
             }
+            // 设置删除标志字段
+            if (property.match(Arrays.asList("删除标记", "删除标志", "del", "del_flag"))) {
+                obj.setPropNameDel(propertyName);
+            }
         }
         if (RvaUtils.isEmpty(obj.getPropNameName())) {
             obj.setPropNameName(cols.get(1).getField());
