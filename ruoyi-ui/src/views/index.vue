@@ -52,19 +52,20 @@ export default {
   mounted() {
     this.roleId = this.$store.state.user.roleIds[0]
     this.init();
-
   },
   methods: {
     init() {
-      listCrud('/rva/view/u1_sys_role/load/update', {roleId: this.roleId}).then(response => {
-        if (response.data.formData['u1_sys_role_yingyong']) {
-          this.appId = response.data.formData['u1_sys_role_yingyong']
-          loadCrud(this.appId).then(res => {
-            this.appData = res.data;
-            console.log(' this.appData=============', this.appData)
-          });
-        }
-      })
+      if (this.roleId) {
+        listCrud('/rva/view/u1_sys_role/load/update', {roleId: this.roleId}).then(response => {
+          if (response.data.formData['u1_sys_role_yingyong']) {
+            this.appId = response.data.formData['u1_sys_role_yingyong']
+            loadCrud(this.appId).then(res => {
+              this.appData = res.data;
+              console.log(' this.appData=============', this.appData)
+            });
+          }
+        })
+      }
     },
 
   },
